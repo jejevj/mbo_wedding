@@ -1,0 +1,7 @@
+services:
+  mbo_wedding:
+    build: .
+    container_name: mbo_wedding
+    ports:
+      - "8865:80"
+    restart: unless-stopped
