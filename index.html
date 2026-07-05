@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loading...</title>
+  <style>
+    #include-loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="include-loader">Memuat halaman...</div>
+
+  <div id="include-header"></div>
+  <div id="include-body"></div>
+  <div id="include-footer"></div>
+
+  <script>
+    async function loadPart(url, targetId) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Gagal memuat ' + url);
+        const html = await res.text();
+        document.getElementById(targetId).innerHTML = html;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function init() {
+      await Promise.all([
+        loadPart('header.html', 'include-header'),
+        loadPart('body.html',   'include-body'),
+        loadPart('footer.html', 'include-footer'),
+      ]);
+
+      document.getElementById('include-loader').style.display = 'none';
+
+      // Re-execute scripts that were injected via innerHTML
+      ['include-header', 'include-body', 'include-footer'].forEach(id => {
+        const container = document.getElementById(id);
+        container.querySelectorAll('script').forEach(oldScript => {
+          const newScript = document.createElement('script');
+          [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          newScript.textContent = oldScript.textContent;
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+      });
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
