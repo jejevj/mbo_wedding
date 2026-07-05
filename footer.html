@@ -41,7 +41,7 @@
 
 
     <script>
-        const showBackground = ;
+        const showBackground = null;
         const themeMeta = document.querySelector("meta[name='theme_id']");
         const themeId = themeMeta ? themeMeta.getAttribute('content') : null;
 
@@ -306,7 +306,6 @@
                         playPauseIcon.classList.replace("icofont-ui-pause", "icofont-music-alt");
                     }
                 } else if (document.visibilityState === "visible") {
-                    // Unified check for both domain types
                     const isAnyVideoPlaying =
                         (player && player.getPlayerState && player.getPlayerState() === YT.PlayerState.PLAYING) ||
                         (player2 && player2.getPlayerState && player2.getPlayerState() === YT.PlayerState.PLAYING);
@@ -452,10 +451,7 @@
 
         $(document).ready(function () {
 
-            // fonts
             $('head').append('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />');
-
-
             $('head').append('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" integrity="sha256-5uKiXEwbaQh9cgd2/5Vp6WmMnsUr3VZZw0a8rKnOKNU=" crossorigin="anonymous">');
             $('head').append('<link rel="stylesheet" href="https://themes.viding.co/theme_149/assets/css/magnific-popup.css">');
             $('head').append('<link rel="stylesheet" href="https://themes.viding.co/frontend/libraries/icofont/icofont.css">');
@@ -463,66 +459,35 @@
 
             $.ajaxSetup({
                 headers: {
-                    // 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     "X-Requested-With": 'XMLHttpRequest'
                 }
             });
 
-            // font family
             let couple_name_on_main_font_family = "";
             let couple_name_on_cover_font_family = "";
             let couple_name_on_couple_font_family = "";
             let parents_name_on_couple_font_family = "";
-
-            // font size
             let couple_name_on_main_font_size = "";
             let couple_name_on_cover_font_size = "";
             let couple_name_on_couple_font_size = "";
             let parents_name_on_couple_font_size = "";
 
-            // change font family and font size
-            $('.main_style').css({
-                'font-family': couple_name_on_main_font_family,
-                'font-size': couple_name_on_main_font_size + 'px'
-            });
-
-            $('.cover_style').css({
-                'font-family': couple_name_on_cover_font_family,
-                'font-size': couple_name_on_cover_font_size + 'px'
-            });
-
-            $('.bride_style').css({
-                'font-family': couple_name_on_couple_font_family,
-                'font-size': couple_name_on_couple_font_size + 'px'
-            });
-
-            $('.couple-parent-description p').css({
-                'margin-bottom': '0px'
-            });
-
-            $('.couple-parent-name p').css({
-                'font-family': parents_name_on_couple_font_family,
-                'font-size': parents_name_on_couple_font_size + 'px',
-                'margin-bottom': '0px'
-            });
+            $('.main_style').css({ 'font-family': couple_name_on_main_font_family, 'font-size': couple_name_on_main_font_size + 'px' });
+            $('.cover_style').css({ 'font-family': couple_name_on_cover_font_family, 'font-size': couple_name_on_cover_font_size + 'px' });
+            $('.bride_style').css({ 'font-family': couple_name_on_couple_font_family, 'font-size': couple_name_on_couple_font_size + 'px' });
+            $('.couple-parent-description p').css({ 'margin-bottom': '0px' });
+            $('.couple-parent-name p').css({ 'font-family': parents_name_on_couple_font_family, 'font-size': parents_name_on_couple_font_size + 'px', 'margin-bottom': '0px' });
 
             reload_guestbook_data();
         });
 
         var section_order = [1, 2, 3, 4, 6, 5, 7, 8, 9];
         var section_wrapper = $('.moveable_section_wrapper');
-
-        section_wrapper.append(
-            $.map(section_order, function (elm) {
-                return $(".moveable-section[data-id='" + elm + "']");
-            })
-        );
+        section_wrapper.append($.map(section_order, function (elm) { return $(".moveable-section[data-id='" + elm + "']"); }));
 
         $("#tambahdata").validate({
             submitHandler: function (form) {
-                var actionType = $('#tombolsimpan').val();
-                $('#tombolsimpan').prop('disabled', true);
-                $('#tombolsimpan').html('Sending..');
+                $('#tombolsimpan').prop('disabled', true).html('Sending..');
                 $.ajax({
                     data: $('#tambahdata').serialize(),
                     url: "https://viding.co/domain/dummyaccount.viding.co/generateVenueQr",
@@ -530,45 +495,21 @@
                     dataType: 'json',
                     success: function (data) {
                         $('#tombolsimpan').html('Simpan');
-
                         if (data.data.send_rsvp_qrcode == 0 || data.data.status == 0) {
-                            if (`en` == 'en') {
-                                $('#cardRSVP').html("<p class='mb-5'>Thank you for confirming your attendance.</p>");
-                            } else {
-                                $('#cardRSVP').html("<p class='mb-5'>Terima kasih telah mengkonfirmasi kehadiran Anda.</p>");
-                            }
+                            $('#cardRSVP').html("<p class='mb-5'>Thank you for confirming your attendance.</p>");
                         } else {
                             if (data.data.whatsapp_rsvp == 1) {
-                                if (`en` == 'en') {
-                                    $('#cardRSVP').html("<p class='m-4 text-center'>Thank you for confirming your attendance. We have sent a QR Code to your WhatsApp number. Please save the QR Code for later scanning at the event venue</p>");
-                                } else {
-                                    $('#cardRSVP').html("<p class='m-4 text-center'>Terima kasih telah mengkonfirmasi kehadiran Anda. Kami telah mengirimkan QR Code ke nomor WhatsApp Anda. Silahkan simpan QR Code tersebut untuk nantinya discan pada saat di venue acara</p>");
-                                }
+                                $('#cardRSVP').html("<p class='m-4 text-center'>Thank you for confirming your attendance. We have sent a QR Code to your WhatsApp number.</p>");
                             } else {
-                                if (`en` == 'en') {
-                                    $('#cardRSVP').html("<p class='m-4 text-center'>Thank you for confirming your attendance. We have sent a QR Code to your email address. Please save the QR Code for later scanning at the event venue</p>");
-                                } else {
-                                    $('#cardRSVP').html("<p class='m-4 text-center'>Terima kasih telah mengkonfirmasi kehadiran Anda. Kami telah mengirimkan QR Code ke alamat email Anda. Silahkan simpan QR Code tersebut untuk nantinya discan pada saat di venue acara</p>");
-                                }
+                                $('#cardRSVP').html("<p class='m-4 text-center'>Thank you for confirming your attendance. We have sent a QR Code to your email address.</p>");
                             }
                         }
-
                         ScrollTrigger.refresh();
-
-                        iziToast.success({
-                            title: 'Sukses',
-                            message: 'Terimakasih atas konfirmasi anda!',
-                            position: 'bottomRight'
-                        });
+                        iziToast.success({ title: 'Sukses', message: 'Terimakasih atas konfirmasi anda!', position: 'bottomRight' });
                     },
                     error: function (data) {
-                        $('#tombolsimpan').prop('disabled', false);
-                        $('#tombolsimpan').html('Simpan');
-                        iziToast.error({
-                            title: ' Gagal Terkirim',
-                            message: (data.responseJSON.message ?? 'Mohon coba lagi!'),
-                            position: 'bottomRight'
-                        });
+                        $('#tombolsimpan').prop('disabled', false).html('Simpan');
+                        iziToast.error({ title: 'Gagal Terkirim', message: (data.responseJSON.message ?? 'Mohon coba lagi!'), position: 'bottomRight' });
                     }
                 });
             }
@@ -584,68 +525,40 @@
 
         $("#guestbook_form").validate({
             submitHandler: function (form) {
-                var actionType = $('#tombolsimpan').val();
-                $('#guestbook_submit_btn').prop('disabled', true);
-                $('#guestbook_submit_btn').html('Sending..');
-
+                $('#guestbook_submit_btn').prop('disabled', true).html('Sending..');
                 $.ajax({
                     data: $('#guestbook_form').serialize(),
                     url: "https://viding.co/bookstore",
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
-                        if (`en` == 'en') {
-                            $('.guestbook_form_wrapper').html("<p class='text-center'>Thank you, you have left a comment</p>");
-                        } else {
-                            $('.guestbook_form_wrapper').html("<p class='text-center'>Terima Kasih, Anda telah memberikan komentar</p>");
-                        }
-
-                        $('#guestbook_submit_btn').prop('disabled', false);
-                        $('#guestbook_submit_btn').html('Send');
-
+                        $('.guestbook_form_wrapper').html("<p class='text-center'>Thank you, you have left a comment</p>");
+                        $('#guestbook_submit_btn').prop('disabled', false).html('Send');
                         reload_guestbook_data();
                         ScrollTrigger.refresh();
-
-                        iziToast.success({
-                            title: 'Berhasil',
-                            message: 'Pesan anda telah ditambahkan. Terimakasih!',
-                            position: 'bottomRight'
-                        });
+                        iziToast.success({ title: 'Berhasil', message: 'Pesan anda telah ditambahkan. Terimakasih!', position: 'bottomRight' });
                     },
                     error: function (data) {
-                        $('#guestbook_submit_btn').prop('disabled', false);
-                        $('#guestbook_submit_btn').html('Send');
-
-                        iziToast.error({
-                            title: 'Gagal',
-                            message: 'Pesan anda gagal ditambahkan. Silahkan mencoba kembali beberapa saat! ' + (data.responseJSON.message ?? ''),
-                            position: 'bottomRight'
-                        });
+                        $('#guestbook_submit_btn').prop('disabled', false).html('Send');
+                        iziToast.error({ title: 'Gagal', message: 'Pesan anda gagal ditambahkan. ' + (data.responseJSON.message ?? ''), position: 'bottomRight' });
                     }
                 });
             }
         });
 
         $('.translate-btn').on('click', function () {
-            lang = $(this).data('lang');
-            changeLanguageByButtonClick(lang);
+            changeLanguageByButtonClick($(this).data('lang'));
         });
 
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'viding'
-            }, 'google_translate_element');
+            new google.translate.TranslateElement({ pageLanguage: 'viding' }, 'google_translate_element');
         }
 
         function changeLanguageByButtonClick(lang) {
-            // var language = document.getElementById("language").value;
             var selectField = document.querySelector("#google_translate_element select");
             for (var i = 0; i < selectField.children.length; i++) {
-                var option = selectField.children[i];
-                // find desired langauge and change the former language of the hidden selection-field
-                if (option.value == lang) {
+                if (selectField.children[i].value == lang) {
                     selectField.selectedIndex = i;
-                    // trigger change event afterwards to make google-lib translate this side
                     selectField.dispatchEvent(new Event('change'));
                     break;
                 }
@@ -656,49 +569,22 @@
             $('.skiptranslate iframe').contents().find('#\\:1\\.restore').click();
         }
 
-        /** Color Picker **/
-        const defaultColors = {
-            main: "#4D0A13",
-            primary: "#641823",
-            secondary: "#A9954F",
-        }
-
+        const defaultColors = { main: "#4D0A13", primary: "#641823", secondary: "#A9954F" };
         const cp = colorpicker(document.querySelector('.colorpicker__wrapper'), defaultColors, '');
-
-        /** End of Color Picker **/
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
     <script>
-        // Clipboard
         var clipboard = new ClipboardJS('.btn-copy-bank-acc');
-        console.log(clipboard);
-
-        clipboard.on('success', function (e) {
-            alert('Copied Successfully!');
-        });
-
-        clipboard.on('error', function (e) {
-            alert('Copy failed!')
-        });
+        clipboard.on('success', function (e) { alert('Copied Successfully!'); });
+        clipboard.on('error', function (e) { alert('Copy failed!'); });
     </script>
-    <script>
-        /* $(document).ready(function() {
-                $("#toggleButton").click(function() {
-                    $("#hiddenElement").toggle(); // Toggle the visibility of the element
-                    $("#toggleButton").hide();
-                });
-            }); */
-        // Get all elements with class toggleButton
-        const toggleButtons = document.querySelectorAll('.toggleButton');
 
-        // Loop through each button and add a click event listener
+    <script>
+        const toggleButtons = document.querySelectorAll('.toggleButton');
         toggleButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Find the corresponding hiddenElement for this button
                 const hiddenElement = this.parentNode.nextElementSibling;
-
-                // Toggle the display of the hiddenElement
                 if (hiddenElement.style.display === 'none' || hiddenElement.style.display === '') {
                     hiddenElement.style.display = 'block';
                 } else {
@@ -708,11 +594,10 @@
         });
     </script>
 
-
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496"
         integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ=="
-        data-cf-beacon='{"version":"2024.11.0","token":"9788b2a8af4d4335bde0fab3174b2eed","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+        data-cf-beacon='{"version":"2024.11.0","token":"9788b2a8af4d4335bde0fab3174b2eed"}'
         crossorigin="anonymous"></script>
 </body>
 
