@@ -223,6 +223,9 @@
         document.onreadystatechange = () => {
             if (document.readyState !== "complete") {
                 document.querySelector(".loader-wrapper").style.visibility = "visible";
+                // document.querySelector(".loader-wrapper").style.visibility = "hidden";
+                // runAnimationOrnamentCover();
+                // runAnimationLoop();
             } else {
                 document.querySelector(".loader-wrapper").style.visibility = "hidden";
                 runAnimationOrnamentCover();
@@ -2021,7 +2024,6 @@
                 }
             }
         </style>
-        <p class="footer-text">Copyright ©2026. This invitation saves paper and reduce carbon footprint 🌱</p>
 
     </footer>
 
