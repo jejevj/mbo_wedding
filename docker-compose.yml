@@ -4,4 +4,9 @@ services:
     container_name: mbo_wedding
     ports:
       - "8865:80"
+    environment:
+      - PORT=80
+    volumes:
+      # Persist wishes.json agar tidak hilang saat container restart
+      - ./wishes.json:/app/wishes.json
     restart: unless-stopped
