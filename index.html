@@ -2963,13 +2963,15 @@
                     type: "GET",
                     dataType: 'json',
                     success: function (data) {
-                        if (!data || data.length === 0) {
+                        // ✅ Cek data.data karena response punya wrapper { success, data: [...] }
+                        if (!data.success || !data.data || data.data.length === 0) {
                             $('#wishes_wrapper').html('<p class="mb-4"><b>Belum ada ucapan.</b></p>');
                             return;
                         }
 
                         var html = '';
-                        $.each(data, function (i, item) {
+                        // ✅ Iterasi data.data bukan data
+                        $.each(data.data, function (i, item) {
                             html += `
                         <div class="wish-item mb-3">
                             <strong>${item.name}</strong>
@@ -2988,7 +2990,6 @@
                 });
             }
         }
-
         $("#guestbook_form").validate({
             submitHandler: function (form) {
                 $('#guestbook_submit_btn').prop('disabled', true);
