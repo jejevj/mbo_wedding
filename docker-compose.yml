@@ -1,6 +1,8 @@
 services:
   mbo_wedding:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mbo_wedding
     ports:
       - "8865:80"
@@ -8,5 +10,19 @@ services:
       - PORT=80
     volumes:
       # Persist wishes.json agar tidak hilang saat container restart
+      - ./wishes.json:/app/wishes.json
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: mbo_wedding_backend
+    ports:
+      - "8774:8774"
+    environment:
+      - PORT=8774
+    volumes:
+      # Persist wishes.json — shared dengan frontend
       - ./wishes.json:/app/wishes.json
     restart: unless-stopped

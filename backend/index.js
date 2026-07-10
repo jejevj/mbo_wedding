@@ -6,8 +6,12 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8774;
 
-// Path ke wishes.json (root repo, satu level di atas folder backend)
-const WISHES_FILE = path.join(__dirname, '..', 'wishes.json');
+// Di Docker: wishes.json di-mount ke /app/wishes.json
+// Di lokal: satu level di atas folder backend
+const WISHES_FILE = process.env.WISHES_PATH
+  || (fs.existsSync('/app/wishes.json')
+    ? '/app/wishes.json'
+    : path.join(__dirname, '..', 'wishes.json'));
 
 app.use(cors());
 app.use(express.json());
@@ -69,6 +73,26 @@ app.get('/api/wishes/:id', (req, res) => {
   }
 });
 
+// PUT update wish by ID
+app.put('/api/wishes/:id', (req, res) => {
+  try {
+    const wishes = readWishes();
+    const idx = wishes.findIndex(w => w.id === parseInt(req.params.id));
+    if (idx === -1) return res.status(404).json({ success: false, message: 'Wish tidak ditemukan' });
+    const { name, alamat, comment } = req.body;
+    wishes[idx] = {
+      ...wishes[idx],
+      ...(name !== undefined && { name }),
+      ...(alamat !== undefined && { alamat }),
+      ...(comment !== undefined && { comment }),
+    };
+    writeWishes(wishes);
+    res.json({ success: true, data: wishes[idx] });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Gagal mengupdate wish', error: err.message });
+  }
+});
+
 // DELETE wish by ID
 app.delete('/api/wishes/:id', (req, res) => {
   try {
@@ -85,9 +109,10 @@ app.delete('/api/wishes/:id', (req, res) => {
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'mbo-wedding-backend', port: PORT });
+  res.json({ status: 'ok', service: 'mbo-wedding-backend', port: PORT, wishes_file: WISHES_FILE });
 });
 
 app.listen(PORT, () => {
   console.log(`MBO Wedding Backend running on port ${PORT}`);
+  console.log(`Wishes file: ${WISHES_FILE}`);
 });

@@ -2,17 +2,17 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files dan install dependencies
-COPY backend/package*.json ./backend/
-RUN cd backend && npm install --production
+# Copy package files dulu untuk cache layer
+COPY backend/package*.json ./
 
-# Copy semua source backend
-COPY backend/ ./backend/
+# Install production dependencies
+RUN npm install --production
 
-# Copy wishes.json dari root repo
-COPY wishes.json ./wishes.json
+# Copy source backend
+COPY backend/index.js ./index.js
 
-WORKDIR /app/backend
+# wishes.json di-mount via volume (lihat docker-compose.yml)
+# Path yang dibaca: /app/wishes.json
 
 EXPOSE 8774
 
