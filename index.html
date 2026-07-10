@@ -219,6 +219,19 @@
     </div>
 
     <script>
+        // Ambil nama tamu dari URL ?to=
+        function getGuestName() {
+            var params = new URLSearchParams(window.location.search);
+            return params.get('to') || '';
+        }
+        // Ambil nama tamu dari URL ?to=
+        function getGuestName() {
+            var params = new URLSearchParams(window.location.search);
+            return params.get('to') || '';
+        }
+
+        var guestName = getGuestName();
+        var guestName = getGuestName();
         document.onreadystatechange = () => {
             if (document.readyState !== "complete") {
                 document.querySelector(".loader-wrapper").style.visibility = "visible";
@@ -345,6 +358,13 @@
                             <div class="title">
                                 <h1 class="cover_style notranslate">Ikbal & Ikha</h1>
                             </div>
+
+                            <!-- ✅ Tampilkan nama tamu di sini -->
+                            <div id="guest-name-wrapper" style="margin-top:8px; margin-bottom:16px; display:none;">
+                                <p style="font-size:14px; margin:0;">Kepada Yth.</p>
+                                <p id="guest-name-display" style="font-size:18px; font-weight:700; margin:0;"></p>
+                            </div>
+
                             <div class="elements-widget">
                                 <button class="btn btn-custom color-secondary" id="btn-envelope">
                                     <strong>Open the Invitation <i class="fas fa-envelope-open-text"></i></strong>
