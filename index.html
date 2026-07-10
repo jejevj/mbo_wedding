@@ -220,28 +220,28 @@
 
     <script>
         // Ambil nama tamu dari URL ?to=
+        // ✅ Cukup satu fungsi helper ini saja (tanpa var guestName di luar)
         function getGuestName() {
             var params = new URLSearchParams(window.location.search);
             return params.get('to') || '';
         }
 
+        $(document).ready(function () {
+            var guestName = getGuestName(); // ✅ Deklarasi cukup di sini saja
 
-        var guestName = getGuestName();
-        document.onreadystatechange = () => {
-            if (document.readyState !== "complete") {
-                document.querySelector(".loader-wrapper").style.visibility = "visible";
-                // document.querySelector(".loader-wrapper").style.visibility = "hidden";
-                // runAnimationOrnamentCover();
-                // runAnimationLoop();
-            } else {
-                document.querySelector(".loader-wrapper").style.visibility = "hidden";
-                runAnimationOrnamentCover();
-                runAnimationLoop();
+            if (guestName) {
+                // Tampilkan nama di cover
+                $('#guest-name-display').text(guestName);
+                $('#guest-name-wrapper').show();
 
+                // Auto-isi field name di form wishes & kunci (readonly)
+                $('input[name="name"]').val(guestName).prop('readonly', true).css({
+                    'background': '#e9ecef',
+                    'cursor': 'not-allowed'
+                });
             }
-        };
-      
-        </script>
+        });
+    </script>
 
 
     <!-- progress -->
