@@ -219,23 +219,21 @@
     </div>
 
     <script>
-        // Ambil nama tamu dari URL ?to=
-        // ✅ Cukup satu fungsi helper ini saja (tanpa var guestName di luar)
         function getGuestName() {
             var params = new URLSearchParams(window.location.search);
             return params.get('to') || '';
         }
 
         $(document).ready(function () {
-            var guestName = getGuestName(); // ✅ Deklarasi cukup di sini saja
+            var toGuestName = getGuestName(); // ✅ Nama berbeda, tidak konflik
 
-            if (guestName) {
+            if (toGuestName) {
                 // Tampilkan nama di cover
-                $('#guest-name-display').text(guestName);
+                $('#guest-name-display').text(toGuestName);
                 $('#guest-name-wrapper').show();
 
                 // Auto-isi field name di form wishes & kunci (readonly)
-                $('input[name="name"]').val(guestName).prop('readonly', true).css({
+                $('input[name="name"]').val(toGuestName).prop('readonly', true).css({
                     'background': '#e9ecef',
                     'cursor': 'not-allowed'
                 });
