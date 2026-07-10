@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1330,12 +1329,8 @@
                                             <div class="widget-wrapper" data-anim="zoom-out-up">
                                                 <div class="guestbook_form_wrapper">
                                                     <form class="position-relative color__button__trans"
-                                                        action="https://viding.co/bookstore" method="post"
                                                         id="guestbook_form">
-                                                        <input type="hidden" name="_token"
-                                                            value="jmsqMaonLa69EvixtHpUpXVM0hDr2EgceOtAL4H7"
-                                                            autocomplete="off"> <input type="hidden" name="domain"
-                                                            value="dummyaccount.viding.co">
+                                                        <!-- Hapus _token dan domain karena tidak diperlukan di API kamu -->
                                                         <div class="mb-3">
                                                             <label for="name" class="form-label">Name</label>
                                                             <input type="text" name="name" value="" class="form-control"
@@ -1346,15 +1341,12 @@
                                                             <input type="text" name="alamat" value=""
                                                                 class="form-control" required="">
                                                         </div>
-
-
                                                         <div class="mb-3">
                                                             <label for="comment" class="form-label">Write your
                                                                 wishes</label>
                                                             <textarea required="" name="comment" cols="30" rows="5"
                                                                 class="form-control"></textarea>
                                                         </div>
-
                                                         <button type="submit"
                                                             class="btn btn-custom color-secondary m-auto w-100"
                                                             id="guestbook_submit_btn">Send</button>
@@ -1391,7 +1383,7 @@
                                     <div class="card">
                                         <div class="card-body text-left color__button__trans">
                                             <div id="wishes_wrapper"
-                                                data-url="https://viding.co/booksfour/dummyaccount.viding.co">
+                                                data-url="http://beikbalikha.ourtestcloud.my.id/api/wishes">
                                                 <p class="mb-4">
                                                     <b>Sedang Memuat Komentar..</b>
                                                 </p>
@@ -1508,75 +1500,96 @@
                                         <!-- Rekening Info Cards -->
                                         <div class="rekening-cards" data-anim="fade-up" style="margin-top:1rem;">
                                             <!-- BCA -->
-                                            <div style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
-                                                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                                                    <div style="background:#005baa;color:#fff;font-weight:700;font-size:13px;padding:4px 10px;border-radius:6px;">BCA</div>
-                                                    <span style="font-weight:700;font-size:15px;color:#005baa;">Bank BCA</span>
+                                            <div
+                                                style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+                                                <div
+                                                    style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                                    <div
+                                                        style="background:#005baa;color:#fff;font-weight:700;font-size:13px;padding:4px 10px;border-radius:6px;">
+                                                        BCA</div>
+                                                    <span style="font-weight:700;font-size:15px;color:#005baa;">Bank
+                                                        BCA</span>
                                                 </div>
-                                                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                                                <div
+                                                    style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
                                                     <div>
-                                                        <div style="font-size:22px;font-weight:700;letter-spacing:2px;color:#222;">8525449340</div>
-                                                        <div style="font-size:13px;color:#666;margin-top:2px;">a/n MUHAMMAD IKBAL</div>
+                                                        <div
+                                                            style="font-size:22px;font-weight:700;letter-spacing:2px;color:#222;">
+                                                            8525449340</div>
+                                                        <div style="font-size:13px;color:#666;margin-top:2px;">a/n
+                                                            MUHAMMAD IKBAL</div>
                                                     </div>
-                                                    <button onclick="copyRekening('8525449340', this, '#005baa')" style="background:#005baa;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-weight:600;">
+                                                    <button onclick="copyRekening('8525449340', this, '#005baa')"
+                                                        style="background:#005baa;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-weight:600;">
                                                         &#128203; Salin
                                                     </button>
                                                 </div>
                                             </div>
                                             <!-- Mandiri -->
-                                            <div style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px 20px;margin-bottom:4px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
-                                                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                                                    <div style="background:#003d82;color:#f5c300;font-weight:700;font-size:13px;padding:4px 10px;border-radius:6px;">MANDIRI</div>
-                                                    <span style="font-weight:700;font-size:15px;color:#003d82;">Bank Mandiri</span>
+                                            <div
+                                                style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px 20px;margin-bottom:4px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+                                                <div
+                                                    style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                                    <div
+                                                        style="background:#003d82;color:#f5c300;font-weight:700;font-size:13px;padding:4px 10px;border-radius:6px;">
+                                                        MANDIRI</div>
+                                                    <span style="font-weight:700;font-size:15px;color:#003d82;">Bank
+                                                        Mandiri</span>
                                                 </div>
-                                                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                                                <div
+                                                    style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
                                                     <div>
-                                                        <div style="font-size:20px;font-weight:700;letter-spacing:2px;color:#222;">1100017172922</div>
-                                                        <div style="font-size:13px;color:#666;margin-top:2px;">a/n Ikha Ayuperwitasari</div>
+                                                        <div
+                                                            style="font-size:20px;font-weight:700;letter-spacing:2px;color:#222;">
+                                                            1100017172922</div>
+                                                        <div style="font-size:13px;color:#666;margin-top:2px;">a/n Ikha
+                                                            Ayuperwitasari</div>
                                                     </div>
-                                                    <button onclick="copyRekening('1100017172922', this, '#003d82')" style="background:#003d82;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-weight:600;">
+                                                    <button onclick="copyRekening('1100017172922', this, '#003d82')"
+                                                        style="background:#003d82;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:14px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-weight:600;">
                                                         &#128203; Salin
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- Notifikasi copy -->
-                                        <div id="copy-notif" style="display:none;text-align:center;background:#d4edda;color:#155724;border-radius:8px;padding:10px 16px;margin-top:10px;font-size:14px;font-weight:600;">
+                                        <div id="copy-notif"
+                                            style="display:none;text-align:center;background:#d4edda;color:#155724;border-radius:8px;padding:10px 16px;margin-top:10px;font-size:14px;font-weight:600;">
                                             &#10003; Nomor rekening berhasil disalin!
                                         </div>
                                         <script>
-                                        function copyRekening(norek, btn, origColor) {
-                                            var origText = btn.innerHTML;
-                                            navigator.clipboard.writeText(norek).then(function() {
-                                                btn.innerHTML = "&#10003; Tersalin!";
-                                                btn.style.background = "#28a745";
-                                                var notif = document.getElementById("copy-notif");
-                                                if(notif) notif.style.display = "block";
-                                                setTimeout(function() {
-                                                    btn.innerHTML = origText;
-                                                    btn.style.background = origColor;
-                                                    if(notif) notif.style.display = "none";
-                                                }, 2000);
-                                            }).catch(function() {
-                                                try {
-                                                    var el = document.createElement("textarea");
-                                                    el.value = norek;
-                                                    document.body.appendChild(el);
-                                                    el.select();
-                                                    document.execCommand("copy");
-                                                    document.body.removeChild(el);
-                                                } catch(e) {}
-                                                btn.innerHTML = "&#10003; Tersalin!";
-                                                btn.style.background = "#28a745";
-                                                var notif = document.getElementById("copy-notif");
-                                                if(notif) notif.style.display = "block";
-                                                setTimeout(function() {
-                                                    btn.innerHTML = origText;
-                                                    btn.style.background = origColor;
-                                                    if(notif) notif.style.display = "none";
-                                                }, 2000);
-                                            });
-                                        }
+                                            function copyRekening(norek, btn, origColor) {
+                                                var origText = btn.innerHTML;
+                                                navigator.clipboard.writeText(norek).then(function () {
+                                                    btn.innerHTML = "&#10003; Tersalin!";
+                                                    btn.style.background = "#28a745";
+                                                    var notif = document.getElementById("copy-notif");
+                                                    if (notif) notif.style.display = "block";
+                                                    setTimeout(function () {
+                                                        btn.innerHTML = origText;
+                                                        btn.style.background = origColor;
+                                                        if (notif) notif.style.display = "none";
+                                                    }, 2000);
+                                                }).catch(function () {
+                                                    try {
+                                                        var el = document.createElement("textarea");
+                                                        el.value = norek;
+                                                        document.body.appendChild(el);
+                                                        el.select();
+                                                        document.execCommand("copy");
+                                                        document.body.removeChild(el);
+                                                    } catch (e) { }
+                                                    btn.innerHTML = "&#10003; Tersalin!";
+                                                    btn.style.background = "#28a745";
+                                                    var notif = document.getElementById("copy-notif");
+                                                    if (notif) notif.style.display = "block";
+                                                    setTimeout(function () {
+                                                        btn.innerHTML = origText;
+                                                        btn.style.background = origColor;
+                                                        if (notif) notif.style.display = "none";
+                                                    }, 2000);
+                                                });
+                                            }
                                         </script>
                                     </div>
                                     <div class="gift my-3" data-anim="fade-up">
@@ -2945,27 +2958,58 @@
             if ($('#wishes_wrapper').length) {
                 $('#wishes_wrapper').html('<p class="mb-4"><b>Sedang Memuat Komentar..</b></p>');
                 var reload_url = $('#wishes_wrapper').data('url');
-                $('#wishes_wrapper').load(reload_url);
+
+                $.ajax({
+                    url: reload_url,
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (!data || data.length === 0) {
+                            $('#wishes_wrapper').html('<p class="mb-4"><b>Belum ada ucapan.</b></p>');
+                            return;
+                        }
+
+                        var html = '';
+                        $.each(data, function (i, item) {
+                            html += `
+                        <div class="wish-item mb-3">
+                            <strong>${item.name}</strong>
+                            ${item.alamat ? `<small class="text-muted d-block">${item.alamat}</small>` : ''}
+                            <p class="mb-0">${item.comment}</p>
+                        </div>
+                        <hr>
+                    `;
+                        });
+
+                        $('#wishes_wrapper').html(html);
+                    },
+                    error: function () {
+                        $('#wishes_wrapper').html('<p class="mb-4 text-danger"><b>Gagal memuat komentar.</b></p>');
+                    }
+                });
             }
         }
 
         $("#guestbook_form").validate({
             submitHandler: function (form) {
-                var actionType = $('#tombolsimpan').val();
                 $('#guestbook_submit_btn').prop('disabled', true);
                 $('#guestbook_submit_btn').html('Sending..');
 
+                // Ambil data dari form
+                var formData = {
+                    name: $('input[name="name"]').val(),
+                    alamat: $('input[name="alamat"]').val(),
+                    comment: $('textarea[name="comment"]').val()
+                };
+
                 $.ajax({
-                    data: $('#guestbook_form').serialize(),
-                    url: "https://viding.co/bookstore",
+                    data: JSON.stringify(formData),
+                    url: "http://beikbalikha.ourtestcloud.my.id/api/wishes",
                     type: "POST",
+                    contentType: "application/json",  // Kirim sebagai JSON
                     dataType: 'json',
                     success: function (data) {
-                        if (`en` == 'en') {
-                            $('.guestbook_form_wrapper').html("<p class='text-center'>Thank you, you have left a comment</p>");
-                        } else {
-                            $('.guestbook_form_wrapper').html("<p class='text-center'>Terima Kasih, Anda telah memberikan komentar</p>");
-                        }
+                        $('.guestbook_form_wrapper').html("<p class='text-center'>Thank you, you have left a comment</p>");
 
                         $('#guestbook_submit_btn').prop('disabled', false);
                         $('#guestbook_submit_btn').html('Send');
@@ -2985,14 +3029,13 @@
 
                         iziToast.error({
                             title: 'Gagal',
-                            message: 'Pesan anda gagal ditambahkan. Silahkan mencoba kembali beberapa saat! ' + (data.responseJSON.message ?? ''),
+                            message: 'Pesan anda gagal ditambahkan. ' + (data.responseJSON?.message ?? ''),
                             position: 'bottomRight'
                         });
                     }
                 });
             }
         });
-
         $('.translate-btn').on('click', function () {
             lang = $(this).data('lang');
             changeLanguageByButtonClick(lang);
