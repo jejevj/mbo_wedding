@@ -1,17 +1,13 @@
 /**
  * wishes-crud.js
- * CRUD operations for wishes.json via fetch API
+ * CRUD operations for wishes via Backend API
+ * Backend: https://beikbalikha.ourtestcloud.my.id:8774/api/wishes
  * Terintegrasi dengan form#guestbook_form dan section.wishes-section di index.html
  */
 
-const WISHES_URL = "wishes.json";
+const BACKEND_API = "https://beikbalikha.ourtestcloud.my.id:8774/api/wishes";
 
 // ─── UTILITIES ───────────────────────────────────────────────────────────────
-
-function generateId(wishes) {
-  if (!wishes.length) return 1;
-  return Math.max(...wishes.map((w) => w.id)) + 1;
-}
 
 function getCurrentISOTime() {
   return new Date().toISOString();
@@ -21,10 +17,10 @@ function getCurrentISOTime() {
 
 async function fetchWishes() {
   try {
-    const res = await fetch(WISHES_URL + "?_=" + Date.now());
-    if (!res.ok) throw new Error("Gagal memuat wishes.json");
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    const res = await fetch(BACKEND_API);
+    if (!res.ok) throw new Error("Gagal memuat wishes dari backend");
+    const json = await res.json();
+    return Array.isArray(json.data) ? json.data : [];
   } catch (err) {
     console.error("[WishesCRUD] fetchWishes error:", err);
     return [];
@@ -92,55 +88,48 @@ async function renderWishes() {
 // ─── CREATE ───────────────────────────────────────────────────────────────────
 
 async function createWish(name, alamat, comment) {
-  const wishes = await fetchWishes();
-  const newWish = {
-    id: generateId(wishes),
-    name: name.trim(),
-    alamat: alamat.trim(),
-    comment: comment.trim(),
-    created_at: getCurrentISOTime(),
-  };
-  wishes.push(newWish);
-  await saveWishes(wishes);
-  return newWish;
+  const res = await fetch(BACKEND_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: name.trim(),
+      alamat: alamat.trim(),
+      comment: comment.trim(),
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Gagal menyimpan wish ke backend");
+  }
+  const json = await res.json();
+  return json.data;
 }
 
 // ─── UPDATE ───────────────────────────────────────────────────────────────────
 
 async function updateWish(id, updatedFields) {
-  const wishes = await fetchWishes();
-  const idx = wishes.findIndex((w) => w.id === parseInt(id));
-  if (idx === -1) throw new Error("Wish tidak ditemukan: id=" + id);
-  wishes[idx] = { ...wishes[idx], ...updatedFields };
-  await saveWishes(wishes);
-  return wishes[idx];
+  const res = await fetch(`${BACKEND_API}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedFields),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Gagal memperbarui wish");
+  }
+  const json = await res.json();
+  return json.data;
 }
 
 // ─── DELETE ───────────────────────────────────────────────────────────────────
 
 async function deleteWish(id) {
-  const wishes = await fetchWishes();
-  const filtered = wishes.filter((w) => w.id !== parseInt(id));
-  if (filtered.length === wishes.length) throw new Error("Wish tidak ditemukan: id=" + id);
-  await saveWishes(filtered);
-}
-
-// ─── SAVE (write back to JSON via fetch PUT/PATCH) ────────────────────────────
-// Note: Karena ini adalah file statis, saveWishes menggunakan endpoint /save-wishes
-// yang perlu disediakan di server (misal via PHP, Node, atau Docker backend).
-// Jika belum ada server, data akan disimpan di localStorage sebagai fallback.
-
-async function saveWishes(wishes) {
-  try {
-    const res = await fetch("/save-wishes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(wishes, null, 2),
-    });
-    if (!res.ok) throw new Error("Server tidak merespons");
-  } catch (err) {
-    console.warn("[WishesCRUD] Fallback ke localStorage:", err.message);
-    localStorage.setItem("wishes_data", JSON.stringify(wishes));
+  const res = await fetch(`${BACKEND_API}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || "Gagal menghapus wish");
   }
 }
 
