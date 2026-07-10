@@ -1338,7 +1338,7 @@
                                                         <div class="mb-3">
                                                             <label for="alamat" class="form-label">Address</label>
                                                             <input type="text" name="alamat" value=""
-                                                                class="form-control" required="">
+                                                                class="form-control" required="" hidden>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="comment" class="form-label">Write your
@@ -2953,43 +2953,70 @@
             }
         });
 
-        function reload_guestbook_data() {
-            if ($('#wishes_wrapper').length) {
-                $('#wishes_wrapper').html('<p class="mb-4"><b>Sedang Memuat Komentar..</b></p>');
-                var reload_url = $('#wishes_wrapper').data('url');
+function getInitials(name) {
+    return name.split(' ').slice(0, 2).map(w => w[0].toUpperCase()).join('');
+}
 
-                $.ajax({
-                    url: reload_url,
-                    type: "GET",
-                    dataType: 'json',
-                    success: function (data) {
-                        // ✅ Cek data.data karena response punya wrapper { success, data: [...] }
-                        if (!data.success || !data.data || data.data.length === 0) {
-                            $('#wishes_wrapper').html('<p class="mb-4"><b>Belum ada ucapan.</b></p>');
-                            return;
-                        }
+function getAvatarColor(name) {
+    var colors = ['#E91E63','#9C27B0','#3F51B5','#009688','#FF5722','#795548','#607D8B','#F44336'];
+    var index = name.charCodeAt(0) % colors.length;
+    return colors[index];
+}
 
-                        var html = '';
-                        // ✅ Iterasi data.data bukan data
-                        $.each(data.data, function (i, item) {
-                            html += `
-                        <div class="wish-item mb-3">
-                            <strong>${item.name}</strong>
-                            ${item.alamat ? `<small class="text-muted d-block">${item.alamat}</small>` : ''}
-                            <p class="mb-0">${item.comment}</p>
+function reload_guestbook_data() {
+    if ($('#wishes_wrapper').length) {
+        $('#wishes_wrapper').html('<p class="mb-4"><b>Sedang Memuat Komentar..</b></p>');
+        var reload_url = $('#wishes_wrapper').data('url');
+
+        $.ajax({
+            url: reload_url,
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                if (!data.success || !data.data || data.data.length === 0) {
+                    $('#wishes_wrapper').html('<p class="mb-4"><b>Belum ada ucapan.</b></p>');
+                    return;
+                }
+
+                var html = '';
+                $.each(data.data, function (i, item) {
+                    var initials = getInitials(item.name);
+                    var bgColor  = getAvatarColor(item.name);
+                    html += `
+                        <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;">
+                            <!-- Avatar Inisial -->
+                            <div style="
+                                min-width:42px; height:42px;
+                                border-radius:50%;
+                                background:${bgColor};
+                                color:#fff;
+                                display:flex; align-items:center; justify-content:center;
+                                font-weight:700; font-size:14px;
+                                flex-shrink:0;
+                            ">${initials}</div>
+
+                            <!-- Bubble Chat -->
+                            <div style="
+                                background:#f1f0f0;
+                                border-radius:0 16px 16px 16px;
+                                padding:10px 14px;
+                                max-width:85%;
+                            ">
+                                <strong style="display:block; margin-bottom:4px; font-size:14px;">${item.name}</strong>
+                                <p style="margin:0; font-size:13px; line-height:1.5;">${item.comment}</p>
+                            </div>
                         </div>
-                        <hr>
                     `;
-                        });
-
-                        $('#wishes_wrapper').html(html);
-                    },
-                    error: function () {
-                        $('#wishes_wrapper').html('<p class="mb-4 text-danger"><b>Gagal memuat komentar.</b></p>');
-                    }
                 });
+
+                $('#wishes_wrapper').html(html);
+            },
+            error: function () {
+                $('#wishes_wrapper').html('<p class="mb-4 text-danger"><b>Gagal memuat komentar.</b></p>');
             }
-        }
+        });
+    }
+}
         $("#guestbook_form").validate({
             submitHandler: function (form) {
                 $('#guestbook_submit_btn').prop('disabled', true);
