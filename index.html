@@ -219,7 +219,22 @@
     </div>
 
     <script>
+        // Ambil nama tamu dari URL ?to=
 
+
+        document.onreadystatechange = () => {
+            if (document.readyState !== "complete") {
+                document.querySelector(".loader-wrapper").style.visibility = "visible";
+                // document.querySelector(".loader-wrapper").style.visibility = "hidden";
+                // runAnimationOrnamentCover();
+                // runAnimationLoop();
+            } else {
+                document.querySelector(".loader-wrapper").style.visibility = "hidden";
+                runAnimationOrnamentCover();
+                runAnimationLoop();
+
+            }
+        };
     </script>
 
 
@@ -3125,21 +3140,7 @@
         // Get all elements with class toggleButton
         const toggleButtons = document.querySelectorAll('.toggleButton');
 
-        // Loop through each button and add a click event listener
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                // Find the corresponding hiddenElement for this button
-                const hiddenElement = this.parentNode.nextElementSibling;
-
-                // Toggle the display of the hiddenElement
-                if (hiddenElement.style.display === 'none' || hiddenElement.style.display === '') {
-                    hiddenElement.style.display = 'block';
-                } else {
-                    hiddenElement.style.display = 'none';
-                }
-            });
-        });
-                function getGuestName() {
+        function getGuestName() {
             var params = new URLSearchParams(window.location.search);
             return params.get('to') || '';
         }
@@ -3159,6 +3160,22 @@
                 });
             }
         });
+
+        // Loop through each button and add a click event listener
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Find the corresponding hiddenElement for this button
+                const hiddenElement = this.parentNode.nextElementSibling;
+
+                // Toggle the display of the hiddenElement
+                if (hiddenElement.style.display === 'none' || hiddenElement.style.display === '') {
+                    hiddenElement.style.display = 'block';
+                } else {
+                    hiddenElement.style.display = 'none';
+                }
+            });
+        });
+
     </script>
 
 
