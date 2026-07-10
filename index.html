@@ -219,26 +219,7 @@
     </div>
 
     <script>
-        function getGuestName() {
-            var params = new URLSearchParams(window.location.search);
-            return params.get('to') || '';
-        }
 
-        $(document).ready(function () {
-            var toGuestName = getGuestName(); // ✅ Nama berbeda, tidak konflik
-
-            if (toGuestName) {
-                // Tampilkan nama di cover
-                $('#guest-name-display').text(toGuestName);
-                $('#guest-name-wrapper').show();
-
-                // Auto-isi field name di form wishes & kunci (readonly)
-                $('input[name="name"]').val(toGuestName).prop('readonly', true).css({
-                    'background': '#e9ecef',
-                    'cursor': 'not-allowed'
-                });
-            }
-        });
     </script>
 
 
@@ -3157,6 +3138,26 @@
                     hiddenElement.style.display = 'none';
                 }
             });
+        });
+                function getGuestName() {
+            var params = new URLSearchParams(window.location.search);
+            return params.get('to') || '';
+        }
+
+        $(document).ready(function () {
+            var toGuestName = getGuestName(); // ✅ Nama berbeda, tidak konflik
+
+            if (toGuestName) {
+                // Tampilkan nama di cover
+                $('#guest-name-display').text(toGuestName);
+                $('#guest-name-wrapper').show();
+
+                // Auto-isi field name di form wishes & kunci (readonly)
+                $('input[name="name"]').val(toGuestName).prop('readonly', true).css({
+                    'background': '#e9ecef',
+                    'cursor': 'not-allowed'
+                });
+            }
         });
     </script>
 
