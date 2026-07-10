@@ -224,11 +224,7 @@
             var params = new URLSearchParams(window.location.search);
             return params.get('to') || '';
         }
-        // Ambil nama tamu dari URL ?to=
-        function getGuestName() {
-            var params = new URLSearchParams(window.location.search);
-            return params.get('to') || '';
-        }
+
 
         var guestName = getGuestName();
         document.onreadystatechange = () => {
