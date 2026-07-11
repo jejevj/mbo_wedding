@@ -31,46 +31,45 @@
       border-radius: 12px; padding: 24px; margin-bottom: 24px;
       box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
-    .card h2 { font-size: 1.05rem; color: var(--gold); margin-bottom: 16px; }
+    .card h2 { font-size: 1.05rem; color: var(--gold); margin-bottom: 4px; }
+    .card .sub { font-size: 0.8rem; color: #999; margin-bottom: 16px; }
 
     .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
     .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
     label { font-size: 0.82rem; font-weight: 600; color: #555; }
-    input {
+    input, textarea {
       padding: 9px 12px; border: 1px solid var(--border);
       border-radius: 8px; font-size: 0.92rem; background: #fff;
-      outline: none; transition: border .2s;
+      outline: none; transition: border .2s; width: 100%;
     }
-    input:focus { border-color: var(--gold); }
+    input:focus, textarea:focus { border-color: var(--gold); }
+    textarea { resize: vertical; min-height: 130px; font-family: inherit; line-height: 1.6; }
 
     .btn {
       padding: 9px 20px; border: none; border-radius: 8px;
       cursor: pointer; font-size: 0.88rem; font-weight: 600;
       transition: all .2s; white-space: nowrap;
     }
-    .btn-primary  { background: var(--gold); color: #fff; }
-    .btn-primary:hover  { background: #9a7a1e; }
-    .btn-danger   { background: var(--red); color: #fff; }
-    .btn-danger:hover   { background: #a93226; }
+    .btn-primary { background: var(--gold); color: #fff; }
+    .btn-primary:hover { background: #9a7a1e; }
+    .btn-danger  { background: var(--red); color: #fff; }
+    .btn-danger:hover  { background: #a93226; }
     .btn-wa { background: #25d366; color: #fff; }
     .btn-wa:hover { background: #1da851; }
+    .btn-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
+    .btn-outline:hover { background: var(--gold); color: #fff; }
     .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
 
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    th {
-      background: #f5ead0; color: #7a5c1e;
-      padding: 10px 12px; text-align: left; font-weight: 700;
-    }
+    th { background: #f5ead0; color: #7a5c1e; padding: 10px 12px; text-align: left; font-weight: 700; }
     td { padding: 9px 12px; border-bottom: 1px solid #f0e8d0; vertical-align: middle; }
     tr:hover td { background: #fffdf5; }
 
-    .link-cell {
-      display: flex; align-items: center; gap: 6px;
-    }
+    .link-cell { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .link-cell input {
       flex: 1; font-family: monospace; font-size: 0.75rem;
-      background: #f7f3e8; color: #333; min-width: 0;
+      background: #f7f3e8; color: #333; min-width: 120px;
     }
 
     .alert {
@@ -81,12 +80,30 @@
     .alert-error   { background: #fdecea; color: #c0392b; display: block; }
 
     .search-bar { margin-bottom: 14px; }
-    .search-bar input { width: 100%; padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px; }
+    .search-bar input { padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px; }
     .empty { text-align: center; color: #aaa; padding: 40px 0; font-size: 0.9rem; }
+
+    /* Template editor */
+    .tmpl-editor { margin-top: 0; }
+    .placeholder-hint {
+      font-size: 0.78rem; color: #999; margin-top: 6px; line-height: 1.5;
+    }
+    .placeholder-hint code {
+      background: #f0e8cc; padding: 1px 5px; border-radius: 4px;
+      color: #7a4f00; font-size: 0.78rem;
+    }
+    .tmpl-preview-box {
+      background: linear-gradient(135deg, #fdf8ee, #f5ead0);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 16px; font-size: 0.84rem; line-height: 1.7;
+      white-space: pre-wrap; color: #333; margin-top: 10px;
+    }
+    .tmpl-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 
     /* Toast */
     #toast {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
       background: #2c1810; color: #f0d88a;
       padding: 10px 24px; border-radius: 24px;
       font-size: 0.88rem; font-weight: 600;
@@ -95,19 +112,6 @@
       z-index: 9999;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* Template section */
-    .tmpl-section { margin-top: 20px; }
-    .tmpl-section summary {
-      cursor: pointer; font-size: 0.88rem; color: var(--gold);
-      font-weight: 600; padding: 6px 0; user-select: none;
-    }
-    .tmpl-preview {
-      background: linear-gradient(135deg, #fdf8ee, #f5ead0);
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 16px 18px; font-size: 0.85rem; line-height: 1.7;
-      white-space: pre-wrap; color: #333; margin-top: 10px;
-    }
   </style>
 </head>
 <body>
@@ -115,7 +119,7 @@
 <header>
   <div>
     <h1>🎊 Manajemen Tamu Undangan</h1>
-    <p>MBO Wedding – tambah tamu, salin link & pesan sekaligus</p>
+    <p>MBO Wedding – tambah tamu, edit template, salin pesan sekaligus</p>
   </div>
 </header>
 
@@ -123,7 +127,34 @@
 
 <div class="container">
 
-  <!-- TAMBAH TAMU -->
+  <!-- ════════════════════ TEMPLATE PESAN ════════════════════ -->
+  <div class="card">
+    <h2>✉️ Template Pesan WhatsApp</h2>
+    <p class="sub">Template ini digunakan otomatis saat menyalin pesan untuk setiap tamu.</p>
+    <div id="alert-template" class="alert"></div>
+
+    <div class="tmpl-editor">
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Isi Pesan</label>
+        <textarea id="tmpl-isi" rows="7"
+          placeholder="Assalamu'alaikum, Yth. {nama_tamu}..."
+          oninput="previewTemplate()"></textarea>
+        <p class="placeholder-hint">
+          Gunakan: <code>{nama_tamu}</code> → diganti nama tamu &nbsp;|
+          <code>{link_undangan}</code> → diganti link undangan
+        </p>
+      </div>
+
+      <div class="tmpl-preview-box" id="tmpl-preview">Preview akan muncul di sini...</div>
+
+      <div class="tmpl-actions">
+        <button class="btn btn-outline" onclick="previewTemplate()">👁 Preview</button>
+        <button class="btn btn-primary" onclick="simpanTemplate()">💾 Simpan Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ TAMBAH TAMU ═════════════════════ -->
   <div class="card">
     <h2>➕ Tambah Tamu</h2>
     <div id="alert-tamu" class="alert"></div>
@@ -140,15 +171,9 @@
       </div>
       <button class="btn btn-primary" onclick="tambahTamu()">Simpan</button>
     </div>
-
-    <!-- Preview template -->
-    <details class="tmpl-section">
-      <summary>💬 Lihat template pesan yang akan digunakan</summary>
-      <div class="tmpl-preview" id="tmpl-preview-static">Loading template...</div>
-    </details>
   </div>
 
-  <!-- DAFTAR TAMU -->
+  <!-- ════════════════════ DAFTAR TAMU ═════════════════════ -->
   <div class="card">
     <h2>📋 Daftar Tamu (<span id="jml-tamu">0</span> orang)</h2>
     <div class="search-bar">
@@ -162,8 +187,8 @@
             <th>#</th>
             <th>Nama</th>
             <th>WhatsApp</th>
-            <th>Link Undangan</th>
-            <th>Aksi</th>
+            <th>Link & Pesan</th>
+            <th>Hapus</th>
           </tr>
         </thead>
         <tbody id="tbl-tamu">
@@ -176,37 +201,72 @@
 </div>
 
 <script>
-  // ───────────────────── CONFIG ──────────────────────
+  // ──────────────────── CONFIG ─────────────────────
   const API_BASE = 'https://beikbalikha.ourtestcloud.my.id';
   const BASE_URL = window.location.origin;
 
-  // ───────────────────── STATE ──────────────────────
-  let tamuList    = [];
-  let template1   = null; // template pertama (id:1)
+  // ──────────────────── STATE ──────────────────────
+  let tamuList = [];
+  let template1 = null;
 
-  // ───────────────────── TEMPLATE ───────────────────
+  // ──────────────────── TEMPLATE ───────────────────
   async function loadTemplate() {
     try {
       const r = await fetch(API_BASE + '/api/template');
       const j = await r.json();
-      const list = j.data || [];
-      template1 = list[0] || null;
-      // Tampilkan preview template di section collapse
-      const prev = document.getElementById('tmpl-preview-static');
+      template1 = (j.data || [])[0] || null;
       if (template1) {
-        prev.textContent = template1.isi
-          .replace(/{nama_tamu}/g, 'Bapak/Ibu [Nama Tamu]')
-          .replace(/{link_undangan}/g, BASE_URL + '/?to=[Nama+Tamu]');
-      } else {
-        prev.textContent = 'Belum ada template. Tambahkan via API atau backend/template_pesan.json';
+        document.getElementById('tmpl-isi').value = template1.isi;
+        previewTemplate();
       }
     } catch (e) {
       console.error('loadTemplate:', e);
-      document.getElementById('tmpl-preview-static').textContent = 'Gagal memuat template.';
     }
   }
 
-  // Render pesan dari template-1 untuk tamu tertentu
+  function previewTemplate() {
+    const isi = document.getElementById('tmpl-isi').value;
+    const preview = isi
+      .replace(/{nama_tamu}/g, 'Bapak\/Ibu [Nama Tamu]')
+      .replace(/{link_undangan}/g, BASE_URL + '/?to=[Nama+Tamu]');
+    document.getElementById('tmpl-preview').textContent = preview || 'Preview kosong...';
+  }
+
+  async function simpanTemplate() {
+    const isi = document.getElementById('tmpl-isi').value.trim();
+    if (!isi) return showAlert('alert-template', 'Isi template tidak boleh kosong!', 'error');
+
+    try {
+      let r, j;
+      if (template1) {
+        // UPDATE template yang sudah ada
+        r = await fetch(API_BASE + '/api/template/' + template1.id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isi })
+        });
+      } else {
+        // CREATE jika belum ada sama sekali
+        r = await fetch(API_BASE + '/api/template', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nama: 'Template Utama', isi })
+        });
+      }
+      j = await r.json();
+      if (j.success) {
+        template1 = j.data;
+        showAlert('alert-template', '✅ Template berhasil disimpan!', 'success');
+        previewTemplate();
+        // Re-render tabel agar pesan di tombol salin ikut update
+        renderTamu();
+      } else {
+        showAlert('alert-template', j.message || 'Gagal menyimpan', 'error');
+      }
+    } catch { showAlert('alert-template', 'Gagal menghubungi server', 'error'); }
+  }
+
+  // ──────────────────── BUILD PESAN ─────────────────
   function buildPesan(namaTamu) {
     if (!template1) return '';
     const link = BASE_URL + '/?to=' + encodeURIComponent(namaTamu);
@@ -215,7 +275,7 @@
       .replace(/{link_undangan}/g, link);
   }
 
-  // ───────────────────── TAMU ───────────────────────
+  // ──────────────────── TAMU ───────────────────────
   async function loadTamu() {
     try {
       const r = await fetch(API_BASE + '/api/tamu');
@@ -250,14 +310,14 @@
           <div class="link-cell">
             <input type="text" value="${safeLink}" readonly />
             <button class="btn btn-primary btn-sm"
-              title="Salin link"
+              title="Salin hanya link"
               onclick="copyLink('${safeLink}')">📋 Link</button>
             <button class="btn btn-wa btn-sm"
-              title="Salin link + pesan sekaligus"
-              onclick="copyLinkPesan('${safeLink}', '${safePesan}')">💬 + Pesan</button>
+              title="Salin pesan lengkap (sudah termasuk link)"
+              onclick="copyPesan('${safePesan}')">💬 Pesan</button>
             ${t.wa
               ? `<button class="btn btn-wa btn-sm"
-                  title="Buka WhatsApp"
+                  title="Langsung buka WhatsApp"
                   onclick="bukaWA('${escAttr(t.wa)}', '${safePesan}')">📲 WA</button>`
               : ''}
           </div>
@@ -281,7 +341,7 @@
       });
       const j = await r.json();
       if (j.success) {
-        showAlert('alert-tamu', `Tamu "${nama}" berhasil ditambahkan!`, 'success');
+        showAlert('alert-tamu', `✅ Tamu "${nama}" berhasil ditambahkan!`, 'success');
         document.getElementById('tamu-name').value = '';
         document.getElementById('tamu-wa').value   = '';
         document.getElementById('tamu-name').focus();
@@ -298,40 +358,32 @@
     loadTamu();
   }
 
-  // ───────────────────── COPY HELPERS ─────────────────
+  // ──────────────────── COPY HELPERS ─────────────────
   function copyLink(link) {
     navigator.clipboard.writeText(link)
       .then(() => toast('📋 Link disalin!'))
       .catch(() => toast('❌ Gagal menyalin'));
   }
 
-  function copyLinkPesan(link, pesan) {
-    // Decode karena nilai diambil dari attr yang di-escape
-    const decodedPesan = unescAttr(pesan);
-    const teks = decodedPesan || link;
-    navigator.clipboard.writeText(teks)
-      .then(() => toast('💬 Pesan + link disalin!'))
+  function copyPesan(pesan) {
+    const decoded = unescAttr(pesan);
+    navigator.clipboard.writeText(decoded)
+      .then(() => toast('💬 Pesan disalin! (sudah termasuk link)'))
       .catch(() => toast('❌ Gagal menyalin'));
   }
 
   function bukaWA(wa, pesan) {
     const nomorBersih = wa.replace(/^0/, '62').replace(/[^0-9]/g, '');
-    const decodedPesan = unescAttr(pesan);
-    const url = `https://wa.me/${nomorBersih}?text=${encodeURIComponent(decodedPesan)}`;
-    window.open(url, '_blank');
+    const decoded = unescAttr(pesan);
+    window.open(`https://wa.me/${nomorBersih}?text=${encodeURIComponent(decoded)}`, '_blank');
   }
 
-  // ───────────────────── UTILS ──────────────────────
+  // ──────────────────── UTILS ──────────────────────
   function escHtml(s) {
-    return String(s)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  // Escape untuk nilai dalam onclick="..." attribute (single-quote safe)
   function escAttr(s) {
-    return String(s)
-      .replace(/\\/g,'\\\\').replace(/'/g,"\\x27")
-      .replace(/\n/g,'\\n').replace(/\r/g,'');
+    return String(s).replace(/\\/g,'\\\\').replace(/'/g,'\\x27').replace(/\n/g,'\\n').replace(/\r/g,'');
   }
   function unescAttr(s) {
     return s.replace(/\\x27/g,"'").replace(/\\n/g,'\n').replace(/\\\\/g,'\\');
@@ -349,7 +401,7 @@
     setTimeout(() => el.className = 'alert', 3500);
   }
 
-  // ───────────────────── INIT ───────────────────────
+  // ──────────────────── INIT ───────────────────────
   (async () => {
     await loadTemplate();
     await loadTamu();
