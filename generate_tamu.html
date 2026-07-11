@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Link Tamu – MBO Wedding</title>
+  <style>
+    :root {
+      --gold: #b8972a;
+      --gold-light: #f0d88a;
+      --dark: #1a1a1a;
+      --card: #fff;
+      --border: #e8d9b0;
+      --bg: #fdf8ee;
+      --red: #c0392b;
+      --green: #27ae60;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
+      color: #fff;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    header h1 { font-size: 1.4rem; color: var(--gold-light); }
+    header p { font-size: 0.85rem; opacity: 0.75; margin-top: 2px; }
+    .container { max-width: 1100px; margin: 32px auto; padding: 0 20px; }
+
+    /* TABS */
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+    .tab-btn {
+      padding: 10px 22px;
+      border: 2px solid var(--border);
+      background: #fff;
+      color: #888;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .tab-btn.active {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .card h2 { font-size: 1.05rem; color: var(--gold); margin-bottom: 16px; }
+
+    /* FORM */
+    .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
+    label { font-size: 0.82rem; font-weight: 600; color: #555; }
+    input, select, textarea {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      background: #fff;
+      outline: none;
+      transition: border .2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* BUTTON */
+    .btn {
+      padding: 9px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--gold); color: #fff; }
+    .btn-primary:hover { background: #9a7a1e; }
+    .btn-danger { background: var(--red); color: #fff; }
+    .btn-danger:hover { background: #a93226; }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-success:hover { background: #1e8449; }
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 2px solid var(--gold);
+    }
+    .btn-outline:hover { background: var(--gold); color: #fff; }
+    .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th {
+      background: #f5ead0;
+      color: #7a5c1e;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 700;
+    }
+    td { padding: 9px 12px; border-bottom: 1px solid #f0e8d0; vertical-align: middle; }
+    tr:hover td { background: #fffdf5; }
+
+    /* LINK RESULT */
+    .link-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .link-box input {
+      flex: 1;
+      font-family: monospace;
+      font-size: 0.82rem;
+      background: #f7f3e8;
+      color: #333;
+    }
+    .copy-icon { cursor: pointer; font-size: 1.1rem; }
+
+    /* BADGE */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-keluarga { background: #fde8b5; color: #8a5700; }
+    .badge-rekan { background: #d5eaf5; color: #1a5c80; }
+    .badge-sahabat { background: #d5f5e3; color: #1a6640; }
+    .badge-umum { background: #f0f0f0; color: #666; }
+
+    /* ALERT */
+    .alert {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .alert-success { background: #d5f5e3; color: #1e8449; display: block; }
+    .alert-error { background: #fdecea; color: #c0392b; display: block; }
+
+    /* TEMPLATE PREVIEW */
+    .preview-box {
+      background: linear-gradient(135deg, #fdf8ee, #f5ead0);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      margin-top: 12px;
+      color: #333;
+    }
+
+    /* SEARCH */
+    .search-bar { margin-bottom: 14px; }
+    .search-bar input {
+      width: 100%;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    /* EMPTY STATE */
+    .empty { text-align: center; color: #aaa; padding: 40px 0; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🎊 Generator Link Undangan</h1>
+    <p>Manajemen tamu & template pesan – MBO Wedding</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tamu')">👥 Daftar Tamu</button>
+    <button class="tab-btn" onclick="switchTab('template')">✉️ Template Pesan</button>
+    <button class="tab-btn" onclick="switchTab('generate')">🔗 Generate Link</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ TAB TAMU -->
+  <div id="tab-tamu" class="tab-panel active">
+    <div class="card">
+      <h2>➕ Tambah Tamu Baru</h2>
+      <div id="alert-tamu" class="alert"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Tamu *</label>
+          <input id="tamu-name" type="text" placeholder="Contoh: Bapak Andi Susanto" />
+        </div>
+        <div class="form-group">
+          <label>No. WhatsApp</label>
+          <input id="tamu-wa" type="text" placeholder="08123456789" />
+        </div>
+        <div class="form-group" style="max-width:160px">
+          <label>Kategori</label>
+          <select id="tamu-kategori">
+            <option value="umum">Umum</option>
+            <option value="keluarga">Keluarga</option>
+            <option value="rekan">Rekan Kerja</option>
+            <option value="sahabat">Sahabat</option>
+          </select>
+        </div>
+        <div class="form-group" style="max-width:80px">
+          <label>Jml Kursi</label>
+          <input id="tamu-kursi" type="number" value="2" min="1" max="10" />
+        </div>
+        <button class="btn btn-primary" onclick="tambahTamu()">Simpan</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📋 Daftar Tamu (<span id="jml-tamu">0</span> orang)</h2>
+      <div class="search-bar">
+        <input id="search-tamu" type="text" placeholder="🔍 Cari nama tamu..." oninput="renderTamu()" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nama</th>
+              <th>Kategori</th>
+              <th>WhatsApp</th>
+              <th>Kursi</th>
+              <th>Link Undangan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-tamu">
+            <tr><td colspan="7" class="empty">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ TAB TEMPLATE -->
+  <div id="tab-template" class="tab-panel">
+    <div class="card">
+      <h2>✉️ Template Pesan WhatsApp</h2>
+      <p style="font-size:.83rem;color:#888;margin-bottom:14px">Gunakan placeholder: <code>{nama_tamu}</code> akan diganti nama tamu, <code>{link_undangan}</code> diganti URL undangan.</p>
+      <div id="alert-template" class="alert"></div>
+
+      <div id="list-template"></div>
+
+      <hr style="margin:20px 0;border-color:var(--border)" />
+      <h2>➕ Buat Template Baru</h2>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Nama Template</label>
+        <input id="tmpl-nama" type="text" placeholder="Contoh: Undangan Resmi" />
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Isi Pesan</label>
+        <textarea id="tmpl-isi" rows="6" placeholder="Assalamu'alaikum, Yth. {nama_tamu}..."></textarea>
+      </div>
+      <div class="preview-box" id="tmpl-preview">Preview pesan akan muncul di sini...</div>
+      <div style="margin-top:12px;display:flex;gap:10px">
+        <button class="btn btn-outline" onclick="previewTemplate()">👁 Preview</button>
+        <button class="btn btn-primary" onclick="simpanTemplate()">💾 Simpan Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ TAB GENERATE -->
+  <div id="tab-generate" class="tab-panel">
+    <div class="card">
+      <h2>🔗 Generate Link & Pesan Undangan</h2>
+      <p style="font-size:.83rem;color:#888;margin-bottom:16px">Pilih tamu dan template, lalu salin link atau pesan WhatsApp siap kirim.</p>
+
+      <div class="form-row" style="margin-bottom:16px">
+        <div class="form-group">
+          <label>Pilih Tamu</label>
+          <select id="gen-tamu"></select>
+        </div>
+        <div class="form-group">
+          <label>Pilih Template Pesan</label>
+          <select id="gen-template"></select>
+        </div>
+        <button class="btn btn-primary" onclick="generateLink()">Generate ✨</button>
+      </div>
+
+      <div id="gen-result" style="display:none">
+        <div class="form-group" style="margin-bottom:12px">
+          <label>🔗 Link Undangan</label>
+          <div class="link-box">
+            <input id="gen-link" type="text" readonly />
+            <span class="copy-icon" onclick="copyText('gen-link')" title="Salin link">📋</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>💬 Pesan WhatsApp Siap Kirim</label>
+          <div class="preview-box" id="gen-pesan" style="margin-top:0"></div>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-success" onclick="copyPesan()">📋 Salin Pesan</button>
+            <button class="btn btn-primary" onclick="bukaWA()">📲 Buka WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ───────────────────── CONFIG ─────────────────────
+  const API_BASE = window.location.origin; // backend port sama (proxy via server.js)
+  const BASE_URL = window.location.origin; // base URL undangan
+
+  // ───────────────────── STATE ──────────────────────
+  let tamuList = [];
+  let templateList = [];
+
+  // ───────────────────── TABS ───────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', ['tamu','template','generate'][i] === tab);
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (tab === 'generate') populateGenDropdowns();
+  }
+
+  // ───────────────────── TAMU ───────────────────────
+  async function loadTamu() {
+    try {
+      const r = await fetch(API_BASE + '/api/tamu');
+      const j = await r.json();
+      tamuList = j.data || [];
+      renderTamu();
+    } catch { tamuList = []; renderTamu(); }
+  }
+
+  function renderTamu() {
+    const q = (document.getElementById('search-tamu').value || '').toLowerCase();
+    const filtered = tamuList.filter(t => t.nama.toLowerCase().includes(q));
+    document.getElementById('jml-tamu').textContent = tamuList.length;
+    const tbody = document.getElementById('tbl-tamu');
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">Belum ada tamu</td></tr>';
+      return;
+    }
+    tbody.innerHTML = filtered.map((t, i) => {
+      const link = BASE_URL + '/?to=' + encodeURIComponent(t.nama);
+      return `<tr>
+        <td>${i+1}</td>
+        <td><strong>${escHtml(t.nama)}</strong></td>
+        <td><span class="badge badge-${t.kategori}">${t.kategori}</span></td>
+        <td>${t.wa ? escHtml(t.wa) : '<span style="color:#ccc">-</span>'}</td>
+        <td style="text-align:center">${t.kursi}</td>
+        <td>
+          <div class="link-box">
+            <input type="text" value="${link}" readonly style="font-size:.75rem;max-width:260px" />
+            <span class="copy-icon" onclick="copyVal('${escHtml(link)}')" title="Salin">📋</span>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="hapusTamu(${t.id})">🗑</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function tambahTamu() {
+    const nama = document.getElementById('tamu-name').value.trim();
+    const wa = document.getElementById('tamu-wa').value.trim();
+    const kategori = document.getElementById('tamu-kategori').value;
+    const kursi = parseInt(document.getElementById('tamu-kursi').value) || 2;
+    if (!nama) return showAlert('alert-tamu', 'Nama tamu wajib diisi!', 'error');
+    try {
+      const r = await fetch(API_BASE + '/api/tamu', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama, wa, kategori, kursi })
+      });
+      const j = await r.json();
+      if (j.success) {
+        showAlert('alert-tamu', 'Tamu berhasil ditambahkan!', 'success');
+        document.getElementById('tamu-name').value = '';
+        document.getElementById('tamu-wa').value = '';
+        loadTamu();
+      } else {
+        showAlert('alert-tamu', j.message, 'error');
+      }
+    } catch { showAlert('alert-tamu', 'Gagal menghubungi server', 'error'); }
+  }
+
+  async function hapusTamu(id) {
+    if (!confirm('Hapus tamu ini?')) return;
+    await fetch(API_BASE + '/api/tamu/' + id, { method: 'DELETE' });
+    loadTamu();
+  }
+
+  // ───────────────────── TEMPLATE ───────────────────
+  async function loadTemplate() {
+    try {
+      const r = await fetch(API_BASE + '/api/template');
+      const j = await r.json();
+      templateList = j.data || [];
+      renderTemplate();
+    } catch { templateList = []; renderTemplate(); }
+  }
+
+  function renderTemplate() {
+    const el = document.getElementById('list-template');
+    if (!templateList.length) {
+      el.innerHTML = '<p style="color:#aaa;font-size:.88rem">Belum ada template tersimpan.</p>';
+      return;
+    }
+    el.innerHTML = templateList.map(t => `
+      <div class="card" style="margin-bottom:12px;border-left:4px solid var(--gold)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <strong style="color:var(--gold)">${escHtml(t.nama)}</strong>
+          <button class="btn btn-danger btn-sm" onclick="hapusTemplate(${t.id})">🗑 Hapus</button>
+        </div>
+        <div class="preview-box" style="margin-top:0;font-size:.84rem">${escHtml(t.isi)}</div>
+      </div>
+    `).join('');
+  }
+
+  function previewTemplate() {
+    const isi = document.getElementById('tmpl-isi').value;
+    const preview = isi
+      .replace(/{nama_tamu}/g, 'Bapak/Ibu Contoh')
+      .replace(/{link_undangan}/g, window.location.origin + '/?to=Contoh+Tamu');
+    document.getElementById('tmpl-preview').textContent = preview || 'Preview kosong...';
+  }
+
+  async function simpanTemplate() {
+    const nama = document.getElementById('tmpl-nama').value.trim();
+    const isi = document.getElementById('tmpl-isi').value.trim();
+    if (!nama || !isi) return showAlert('alert-template', 'Nama dan isi template wajib diisi!', 'error');
+    try {
+      const r = await fetch(API_BASE + '/api/template', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama, isi })
+      });
+      const j = await r.json();
+      if (j.success) {
+        showAlert('alert-template', 'Template berhasil disimpan!', 'success');
+        document.getElementById('tmpl-nama').value = '';
+        document.getElementById('tmpl-isi').value = '';
+        document.getElementById('tmpl-preview').textContent = 'Preview pesan akan muncul di sini...';
+        loadTemplate();
+      } else showAlert('alert-template', j.message, 'error');
+    } catch { showAlert('alert-template', 'Gagal menghubungi server', 'error'); }
+  }
+
+  async function hapusTemplate(id) {
+    if (!confirm('Hapus template ini?')) return;
+    await fetch(API_BASE + '/api/template/' + id, { method: 'DELETE' });
+    loadTemplate();
+  }
+
+  // ───────────────────── GENERATE ───────────────────
+  function populateGenDropdowns() {
+    const selTamu = document.getElementById('gen-tamu');
+    const selTmpl = document.getElementById('gen-template');
+    selTamu.innerHTML = tamuList.length
+      ? tamuList.map(t => `<option value="${t.id}">${escHtml(t.nama)}</option>`).join('')
+      : '<option value="">-- Belum ada tamu --</option>';
+    selTmpl.innerHTML = templateList.length
+      ? templateList.map(t => `<option value="${t.id}">${escHtml(t.nama)}</option>`).join('')
+      : '<option value="">-- Belum ada template --</option>';
+    document.getElementById('gen-result').style.display = 'none';
+  }
+
+  function generateLink() {
+    const tamuId = parseInt(document.getElementById('gen-tamu').value);
+    const tmplId = parseInt(document.getElementById('gen-template').value);
+    const tamu = tamuList.find(t => t.id === tamuId);
+    const tmpl = templateList.find(t => t.id === tmplId);
+    if (!tamu || !tmpl) return alert('Pilih tamu dan template terlebih dahulu!');
+
+    const link = BASE_URL + '/?to=' + encodeURIComponent(tamu.nama);
+    const pesan = tmpl.isi
+      .replace(/{nama_tamu}/g, tamu.nama)
+      .replace(/{link_undangan}/g, link);
+
+    document.getElementById('gen-link').value = link;
+    document.getElementById('gen-pesan').textContent = pesan;
+    document.getElementById('gen-result').style.display = 'block';
+    window._genTamu = tamu;
+    window._genPesan = pesan;
+  }
+
+  function copyPesan() {
+    navigator.clipboard.writeText(document.getElementById('gen-pesan').textContent)
+      .then(() => alert('Pesan disalin!'));
+  }
+
+  function bukaWA() {
+    const tamu = window._genTamu;
+    const pesan = window._genPesan;
+    if (!pesan) return;
+    const wa = tamu.wa ? tamu.wa.replace(/^0/, '62').replace(/[^0-9]/g, '') : '';
+    const url = wa
+      ? `https://wa.me/${wa}?text=${encodeURIComponent(pesan)}`
+      : `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+    window.open(url, '_blank');
+  }
+
+  // ───────────────────── UTILS ──────────────────────
+  function copyText(id) {
+    const el = document.getElementById(id);
+    navigator.clipboard.writeText(el.value).then(() => alert('Link disalin!'));
+  }
+  function copyVal(val) {
+    navigator.clipboard.writeText(val).then(() => alert('Link disalin!'));
+  }
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'alert alert-' + type;
+    setTimeout(() => el.className = 'alert', 3500);
+  }
+
+  // ───────────────────── INIT ───────────────────────
+  loadTamu();
+  loadTemplate();
+</script>
+</body>
+</html>

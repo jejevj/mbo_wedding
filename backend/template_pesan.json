@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nama": "Undangan Resmi (Formal)",
+    "isi": "Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nYth. {nama_tamu}\n\nDengan penuh kebahagiaan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami.\n\n📎 Untuk detail lengkap, silakan kunjungi undangan digital kami:\n{link_undangan}\n\nMerupakan kehormatan besar bagi kami apabila Bapak/Ibu berkenan hadir.\n\nWassalamu'alaikum Warahmatullahi Wabarakatuh 🙏",
+    "created_at": "2026-07-12T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "nama": "Undangan Santai (Keluarga & Sahabat)",
+    "isi": "Hei {nama_tamu}! 🎉\n\nAda kabar bahagia nih, kami mau ngundang kamu ke acara pernikahan kami lho!\n\n💌 Cek undangan lengkapnya di sini ya:\n{link_undangan}\n\nSeneng banget kalau kamu bisa hadir dan doain kami. Ditunggu ya! 🥰",
+    "created_at": "2026-07-12T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "nama": "Undangan Singkat (Rekan Kerja)",
+    "isi": "Yth. {nama_tamu},\n\nKami bermaksud mengundang Bapak/Ibu untuk hadir di acara pernikahan kami.\n\n🔗 Undangan digital: {link_undangan}\n\nKehadiran Bapak/Ibu akan menjadi kebahagiaan tersendiri bagi kami. Terima kasih 🙏",
+    "created_at": "2026-07-12T00:00:00.000Z"
+  }
+]
