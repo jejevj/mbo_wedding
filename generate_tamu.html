@@ -79,6 +79,33 @@
     .link-cell { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
     .link-cell input { flex: 1; font-family: monospace; font-size: 0.74rem; background: #f7f3e8; min-width: 100px; }
 
+    /* ── Inline edit nama ── */
+    .nama-cell { display: flex; align-items: center; gap: 6px; }
+    .nama-text {
+      font-weight: 600; cursor: pointer; border-bottom: 1px dashed transparent;
+      transition: border-color .15s; padding: 2px 0;
+    }
+    .nama-text:hover { border-bottom-color: var(--gold); color: var(--gold); }
+    .nama-edit-wrap { display: none; align-items: center; gap: 4px; flex: 1; }
+    .nama-edit-wrap.active { display: flex; }
+    .nama-input {
+      flex: 1; padding: 4px 8px; border: 2px solid var(--gold);
+      border-radius: 6px; font-size: 0.88rem; font-weight: 600;
+      background: #fffef5; min-width: 100px;
+    }
+    .nama-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(184,151,42,.18); }
+    .btn-cancel-edit {
+      background: none; border: none; cursor: pointer;
+      font-size: 1rem; color: #aaa; padding: 2px 4px;
+    }
+    .btn-cancel-edit:hover { color: var(--red); }
+    .btn-edit-nama {
+      background: none; border: none; cursor: pointer;
+      font-size: 0.78rem; color: #ccc; padding: 2px 4px;
+      transition: color .15s;
+    }
+    .btn-edit-nama:hover { color: var(--gold); }
+
     .alert {
       padding: 10px 16px; border-radius: 8px;
       font-size: 0.88rem; margin-bottom: 14px; display: none;
@@ -101,16 +128,13 @@
       white-space: pre-wrap; color: #333; margin-top: 10px;
     }
 
-    /* VCF Upload area */
     .upload-zone {
       border: 2px dashed var(--border); border-radius: 12px;
       padding: 40px 20px; text-align: center;
       cursor: pointer; transition: all .2s; margin-bottom: 16px;
       background: #fffdf8;
     }
-    .upload-zone:hover, .upload-zone.dragover {
-      border-color: var(--gold); background: #fdf5e0;
-    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--gold); background: #fdf5e0; }
     .upload-zone p { color: #aaa; font-size: 0.9rem; margin-top: 8px; }
     .upload-zone .icon { font-size: 2.5rem; }
 
@@ -124,7 +148,6 @@
     .vcf-result .stat-num { font-size: 1.6rem; font-weight: 700; color: var(--gold); }
     .vcf-result .stat-lbl { font-size: 0.75rem; color: #888; }
 
-    /* Toast */
     #toast {
       position: fixed; bottom: 28px; left: 50%;
       transform: translateX(-50%) translateY(20px);
@@ -180,6 +203,7 @@
       </div>
 
       <p class="section-title">📋 Daftar Tamu (<span id="jml-tamu">0</span> orang)</p>
+      <p class="section-sub" style="margin-top:4px">Klik nama untuk mengedit langsung. Tekan <kbd style="background:#f0e8cc;padding:1px 5px;border-radius:4px;font-size:.8rem">Enter</kbd> untuk simpan, <kbd style="background:#f0e8cc;padding:1px 5px;border-radius:4px;font-size:.8rem">Esc</kbd> untuk batal.</p>
       <div class="search-bar" style="margin-top:10px">
         <input id="search-tamu" type="text" placeholder="🔍 Cari nama tamu..." oninput="renderTamu()" />
       </div>
@@ -219,8 +243,8 @@
 
       <div style="background:#f5ead0;border-radius:10px;padding:18px 20px;margin-bottom:20px;font-size:.88rem;line-height:1.8">
         <strong style="color:var(--gold)">📱 Cara import ke HP:</strong><br/>
-        <b>Android:</b> Buka file .vcf → Ketuk “Simpan ke Kontak”<br/>
-        <b>iPhone:</b> AirDrop / email file .vcf → Ketuk “Tambahkan Semua Kontak”<br/>
+        <b>Android:</b> Buka file .vcf → Ketuk "Simpan ke Kontak"<br/>
+        <b>iPhone:</b> AirDrop / email file .vcf → Ketuk "Tambahkan Semua Kontak"<br/>
         <b>WhatsApp:</b> Tidak perlu import; gunakan tombol 📲 WA di daftar tamu.
       </div>
 
@@ -252,12 +276,11 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
 
       <div id="alert-import" class="alert"></div>
 
-      <!-- Drag & Drop zone -->
       <div class="upload-zone" id="upload-zone"
            onclick="document.getElementById('vcf-input').click()"
            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
         <div class="icon">📂</div>
-        <strong>Klik atau drag & drop file .vcf di sini</strong>
+        <strong>Klik atau drag &amp; drop file .vcf di sini</strong>
         <p id="upload-filename">Format: .vcf / vCard (maks 5 MB)</p>
       </div>
       <input type="file" id="vcf-input" accept=".vcf,.vcard" style="display:none"
@@ -266,7 +289,6 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
       <button class="btn btn-blue" id="btn-import" onclick="importVCF()" disabled
               style="margin-bottom:16px">📥 Import Kontak</button>
 
-      <!-- Hasil import -->
       <div class="vcf-result" id="import-result" style="display:none">
         <div class="stat">
           <div class="stat-item">
@@ -286,7 +308,6 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
 </div><!-- /container -->
 
 <script>
-  // ──────────────────── CONFIG ─────────────────────
   const API_BASE = 'https://beikbalikha.ourtestcloud.my.id';
   const BASE_URL = window.location.origin;
 
@@ -294,7 +315,7 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
   let template1 = null;
   let vcfFile   = null;
 
-  // ──────────────────── TABS ──────────────────────
+  // ───────────────────── TABS ──────────────────────
   function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach((b, i) => {
       b.classList.toggle('active', ['tamu','template','export','import'][i] === tab);
@@ -304,7 +325,7 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
     if (tab === 'export') document.getElementById('export-jml').textContent = tamuList.length;
   }
 
-  // ──────────────────── TEMPLATE ───────────────────
+  // ───────────────────── TEMPLATE ──────────────────
   async function loadTemplate() {
     try {
       const r = await fetch(API_BASE + '/api/template');
@@ -336,12 +357,13 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
     } catch { showAlert('alert-template', 'Gagal menghubungi server', 'error'); }
   }
 
-  // ──────────────────── TAMU ───────────────────────
+  // ───────────────────── TAMU ──────────────────────
   function buildPesan(namaTamu) {
     if (!template1) return '';
     const link = BASE_URL + '/?to=' + encodeURIComponent(namaTamu);
     return template1.isi.replace(/{nama_tamu}/g, namaTamu).replace(/{link_undangan}/g, link);
   }
+
   async function loadTamu() {
     try {
       const r = await fetch(API_BASE + '/api/tamu');
@@ -349,19 +371,39 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
     } catch { tamuList = []; }
     renderTamu();
   }
+
   function renderTamu() {
     const q = (document.getElementById('search-tamu').value || '').toLowerCase();
     const filtered = tamuList.filter(t => t.nama.toLowerCase().includes(q));
     document.getElementById('jml-tamu').textContent = tamuList.length;
     const tbody = document.getElementById('tbl-tamu');
-    if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">Belum ada tamu</td></tr>'; return; }
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">Belum ada tamu</td></tr>';
+      return;
+    }
     tbody.innerHTML = filtered.map((t, i) => {
-      const link = BASE_URL + '/?to=' + encodeURIComponent(t.nama);
+      const link  = BASE_URL + '/?to=' + encodeURIComponent(t.nama);
       const pesan = buildPesan(t.nama);
       const sl = escAttr(link), sp = escAttr(pesan);
-      return `<tr>
+      return `<tr id="row-${t.id}">
         <td>${i+1}</td>
-        <td><strong>${escHtml(t.nama)}</strong></td>
+        <td>
+          <div class="nama-cell">
+            <!-- Mode tampil -->
+            <span class="nama-text" id="nama-text-${t.id}"
+                  onclick="startEditNama(${t.id})"
+                  title="Klik untuk edit nama">${escHtml(t.nama)}</span>
+            <button class="btn-edit-nama" onclick="startEditNama(${t.id})" title="Edit nama">✏️</button>
+            <!-- Mode edit -->
+            <div class="nama-edit-wrap" id="nama-edit-${t.id}">
+              <input class="nama-input" id="nama-input-${t.id}"
+                     value="${escAttr(t.nama)}"
+                     onkeydown="onNamaKeydown(event, ${t.id})"
+                     onblur="cancelEditNama(${t.id})" />
+              <button class="btn-cancel-edit" onmousedown="cancelEditNamaBtn(event, ${t.id})" title="Batal">✕</button>
+            </div>
+          </div>
+        </td>
         <td>${t.wa ? escHtml(t.wa) : '<span style="color:#ccc">–</span>'}</td>
         <td><div class="link-cell">
           <input type="text" value="${sl}" readonly />
@@ -373,6 +415,84 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
       </tr>`;
     }).join('');
   }
+
+  // ───────────────────── INLINE EDIT NAMA ──────────
+  function startEditNama(id) {
+    document.getElementById('nama-text-' + id).style.display = 'none';
+    document.querySelector(`#row-${id} .btn-edit-nama`).style.display = 'none';
+    const wrap = document.getElementById('nama-edit-' + id);
+    wrap.classList.add('active');
+    const inp = document.getElementById('nama-input-' + id);
+    inp.focus();
+    inp.select();
+  }
+
+  function cancelEditNama(id) {
+    // dipanggil dari onblur — cek apakah sedang saving agar tidak konflik
+    const wrap = document.getElementById('nama-edit-' + id);
+    if (!wrap) return;
+    wrap.classList.remove('active');
+    const textEl = document.getElementById('nama-text-' + id);
+    if (textEl) textEl.style.display = '';
+    const editBtn = document.querySelector(`#row-${id} .btn-edit-nama`);
+    if (editBtn) editBtn.style.display = '';
+    // Reset value ke nama asli
+    const tamu = tamuList.find(t => t.id === id);
+    const inp  = document.getElementById('nama-input-' + id);
+    if (tamu && inp) inp.value = tamu.nama;
+  }
+
+  function cancelEditNamaBtn(e, id) {
+    // mousedown pada tombol ✕ — prevent blur dulu, baru cancel
+    e.preventDefault();
+    cancelEditNama(id);
+  }
+
+  function onNamaKeydown(e, id) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitEditNama(id);
+    } else if (e.key === 'Escape') {
+      cancelEditNama(id);
+    }
+  }
+
+  async function submitEditNama(id) {
+    const inp      = document.getElementById('nama-input-' + id);
+    const namaBaru = inp ? inp.value.trim() : '';
+    if (!namaBaru) { inp && inp.focus(); return; }
+
+    const tamu = tamuList.find(t => t.id === id);
+    if (!tamu) return;
+    if (namaBaru === tamu.nama) { cancelEditNama(id); return; } // tidak ada perubahan
+
+    // Tandai sedang saving agar onblur tidak reset
+    inp.setAttribute('data-saving', '1');
+
+    try {
+      const r = await fetch(`${API_BASE}/api/tamu/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama: namaBaru })
+      });
+      const j = await r.json();
+      if (j.success) {
+        // Update local state
+        tamu.nama = namaBaru;
+        toast('✅ Nama diperbarui!');
+        // Re-render hanya baris ini untuk update link & pesan
+        renderTamu();
+      } else {
+        toast('❌ Gagal menyimpan: ' + (j.message || ''));
+        cancelEditNama(id);
+      }
+    } catch {
+      toast('❌ Gagal menghubungi server');
+      cancelEditNama(id);
+    }
+  }
+
+  // ───────────────────── TAMBAH / HAPUS ────────────
   async function tambahTamu() {
     const nama = document.getElementById('tamu-name').value.trim();
     const wa   = document.getElementById('tamu-wa').value.trim();
@@ -392,38 +512,28 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
       } else showAlert('alert-tamu', j.message, 'error');
     } catch { showAlert('alert-tamu', 'Gagal menghubungi server', 'error'); }
   }
+
   async function hapusTamu(id) {
     if (!confirm('Hapus tamu ini?')) return;
     await fetch(API_BASE + '/api/tamu/' + id, { method: 'DELETE' });
     loadTamu();
   }
 
-  // ──────────────────── EXPORT VCF ─────────────────
+  // ───────────────────── EXPORT VCF ────────────────
   function downloadVCF() {
     if (!tamuList.length) return toast('⚠️ Belum ada tamu untuk di-export');
-    // Arahkan browser ke endpoint — backend kirim sebagai attachment
     window.open(API_BASE + '/api/tamu/export/vcf', '_blank');
     toast('📥 Mengunduh file VCF...');
   }
 
-  // ──────────────────── IMPORT VCF ─────────────────
-  function onFileSelected(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    setVCFFile(file);
-  }
-  function onDragOver(e) {
-    e.preventDefault();
-    document.getElementById('upload-zone').classList.add('dragover');
-  }
-  function onDragLeave(e) {
-    document.getElementById('upload-zone').classList.remove('dragover');
-  }
+  // ───────────────────── IMPORT VCF ────────────────
+  function onFileSelected(e) { const f = e.target.files[0]; if (f) setVCFFile(f); }
+  function onDragOver(e)  { e.preventDefault(); document.getElementById('upload-zone').classList.add('dragover'); }
+  function onDragLeave()  { document.getElementById('upload-zone').classList.remove('dragover'); }
   function onDrop(e) {
     e.preventDefault();
     document.getElementById('upload-zone').classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) setVCFFile(file);
+    const f = e.dataTransfer.files[0]; if (f) setVCFFile(f);
   }
   function setVCFFile(file) {
     vcfFile = file;
@@ -434,12 +544,11 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
   }
   async function importVCF() {
     if (!vcfFile) return showAlert('alert-import', 'Pilih file VCF terlebih dahulu!', 'error');
-    const formData = new FormData();
-    formData.append('vcf', vcfFile);
+    const fd = new FormData(); fd.append('vcf', vcfFile);
     try {
       document.getElementById('btn-import').disabled = true;
       document.getElementById('btn-import').textContent = '⏳ Memproses...';
-      const r = await fetch(API_BASE + '/api/tamu/import/vcf', { method: 'POST', body: formData });
+      const r = await fetch(API_BASE + '/api/tamu/import/vcf', { method: 'POST', body: fd });
       const j = await r.json();
       if (j.success) {
         document.getElementById('res-added').textContent   = j.added;
@@ -449,13 +558,10 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
         document.getElementById('import-result').style.display = 'block';
         showAlert('alert-import', j.message, 'success');
         await loadTamu();
-        // Reset
         vcfFile = null;
         document.getElementById('vcf-input').value = '';
         document.getElementById('upload-filename').textContent = 'Format: .vcf / vCard (maks 5 MB)';
-      } else {
-        showAlert('alert-import', j.message || 'Gagal import', 'error');
-      }
+      } else showAlert('alert-import', j.message || 'Gagal import', 'error');
     } catch { showAlert('alert-import', 'Gagal menghubungi server', 'error'); }
     finally {
       document.getElementById('btn-import').disabled = false;
@@ -463,7 +569,7 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
     }
   }
 
-  // ──────────────────── COPY HELPERS ─────────────────
+  // ───────────────────── COPY HELPERS ──────────────
   function copyLink(link) {
     navigator.clipboard.writeText(link).then(() => toast('📋 Link disalin!')).catch(() => toast('❌ Gagal'));
   }
@@ -475,7 +581,7 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
     window.open(`https://wa.me/${nomor}?text=${encodeURIComponent(unescAttr(pesan))}`, '_blank');
   }
 
-  // ──────────────────── UTILS ──────────────────────
+  // ───────────────────── UTILS ─────────────────────
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
@@ -496,7 +602,6 @@ python generate_vcf.py --tambah "Ibu Sari"</pre>
     setTimeout(() => el.className = 'alert', 4000);
   }
 
-  // ──────────────────── INIT ───────────────────────
   (async () => { await loadTemplate(); await loadTamu(); })();
 </script>
 </body>
