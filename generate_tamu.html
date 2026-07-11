@@ -329,9 +329,13 @@
 </div>
 
 <script>
-  // ───────────────────── CONFIG ─────────────────────
-  const API_BASE = window.location.origin; // backend port sama (proxy via server.js)
-  const BASE_URL = window.location.origin; // base URL undangan
+  // ─────────────────────────────────────────────────────────────────
+  // CONFIG
+  // API_BASE  → backend Express (port 8774, exposed via subdomain)
+  // BASE_URL  → URL frontend undangan (untuk generate link ?to=...)
+  // ─────────────────────────────────────────────────────────────────
+  const API_BASE = 'https://beikbalikha.ourtestcloud.my.id';
+  const BASE_URL = window.location.origin; // URL halaman undangan itu sendiri
 
   // ───────────────────── STATE ──────────────────────
   let tamuList = [];
@@ -354,7 +358,11 @@
       const j = await r.json();
       tamuList = j.data || [];
       renderTamu();
-    } catch { tamuList = []; renderTamu(); }
+    } catch (e) {
+      console.error('loadTamu error:', e);
+      tamuList = [];
+      renderTamu();
+    }
   }
 
   function renderTamu() {
@@ -424,7 +432,11 @@
       const j = await r.json();
       templateList = j.data || [];
       renderTemplate();
-    } catch { templateList = []; renderTemplate(); }
+    } catch (e) {
+      console.error('loadTemplate error:', e);
+      templateList = [];
+      renderTemplate();
+    }
   }
 
   function renderTemplate() {
@@ -448,7 +460,7 @@
     const isi = document.getElementById('tmpl-isi').value;
     const preview = isi
       .replace(/{nama_tamu}/g, 'Bapak/Ibu Contoh')
-      .replace(/{link_undangan}/g, window.location.origin + '/?to=Contoh+Tamu');
+      .replace(/{link_undangan}/g, BASE_URL + '/?to=Contoh+Tamu');
     document.getElementById('tmpl-preview').textContent = preview || 'Preview kosong...';
   }
 
