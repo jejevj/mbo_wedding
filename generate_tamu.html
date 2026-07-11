@@ -6,33 +6,41 @@
   <title>Manajemen Tamu – MBO Wedding</title>
   <style>
     :root {
-      --gold: #b8972a;
-      --gold-light: #f0d88a;
-      --dark: #1a1a1a;
-      --card: #fff;
-      --border: #e8d9b0;
-      --bg: #fdf8ee;
-      --red: #c0392b;
-      --green: #27ae60;
+      --gold: #b8972a; --gold-light: #f0d88a;
+      --dark: #1a1a1a; --card: #fff;
+      --border: #e8d9b0; --bg: #fdf8ee;
+      --red: #c0392b; --green: #27ae60;
+      --blue: #2980b9;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
     header {
       background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
-      color: #fff; padding: 20px 32px;
-      display: flex; align-items: center; gap: 16px;
+      color: #fff; padding: 20px 32px; display: flex; align-items: center; gap: 16px;
     }
     header h1 { font-size: 1.4rem; color: var(--gold-light); }
     header p  { font-size: 0.85rem; opacity: 0.75; margin-top: 2px; }
-    .container { max-width: 960px; margin: 32px auto; padding: 0 20px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 28px 20px; }
 
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 24px; margin-bottom: 24px;
+    /* TABS */
+    .tabs { display: flex; gap: 4px; margin-bottom: 0; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 10px 18px; border: 2px solid var(--border);
+      background: #fff; color: #888; border-radius: 8px 8px 0 0;
+      cursor: pointer; font-size: 0.88rem; font-weight: 600;
+      transition: all .2s; border-bottom: none;
+    }
+    .tab-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+    .tab-content {
+      background: var(--card); border: 2px solid var(--border);
+      border-radius: 0 8px 8px 8px; padding: 24px;
       box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
-    .card h2 { font-size: 1.05rem; color: var(--gold); margin-bottom: 4px; }
-    .card .sub { font-size: 0.8rem; color: #999; margin-bottom: 16px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .section-title { font-size: 1.05rem; color: var(--gold); margin-bottom: 4px; font-weight: 700; }
+    .section-sub   { font-size: 0.8rem; color: #999; margin-bottom: 18px; }
 
     .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
     .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
@@ -46,7 +54,7 @@
     textarea { resize: vertical; min-height: 130px; font-family: inherit; line-height: 1.6; }
 
     .btn {
-      padding: 9px 20px; border: none; border-radius: 8px;
+      padding: 9px 18px; border: none; border-radius: 8px;
       cursor: pointer; font-size: 0.88rem; font-weight: 600;
       transition: all .2s; white-space: nowrap;
     }
@@ -54,11 +62,13 @@
     .btn-primary:hover { background: #9a7a1e; }
     .btn-danger  { background: var(--red); color: #fff; }
     .btn-danger:hover  { background: #a93226; }
-    .btn-wa { background: #25d366; color: #fff; }
-    .btn-wa:hover { background: #1da851; }
+    .btn-wa      { background: #25d366; color: #fff; }
+    .btn-wa:hover      { background: #1da851; }
+    .btn-blue    { background: var(--blue); color: #fff; }
+    .btn-blue:hover    { background: #1f618d; }
     .btn-outline { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
     .btn-outline:hover { background: var(--gold); color: #fff; }
-    .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+    .btn-sm { padding: 5px 11px; font-size: 0.8rem; }
 
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
@@ -66,11 +76,8 @@
     td { padding: 9px 12px; border-bottom: 1px solid #f0e8d0; vertical-align: middle; }
     tr:hover td { background: #fffdf5; }
 
-    .link-cell { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .link-cell input {
-      flex: 1; font-family: monospace; font-size: 0.75rem;
-      background: #f7f3e8; color: #333; min-width: 120px;
-    }
+    .link-cell { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .link-cell input { flex: 1; font-family: monospace; font-size: 0.74rem; background: #f7f3e8; min-width: 100px; }
 
     .alert {
       padding: 10px 16px; border-radius: 8px;
@@ -78,27 +85,44 @@
     }
     .alert-success { background: #d5f5e3; color: #1e8449; display: block; }
     .alert-error   { background: #fdecea; color: #c0392b; display: block; }
+    .alert-info    { background: #d6eaf8; color: #1a5276; display: block; }
 
     .search-bar { margin-bottom: 14px; }
     .search-bar input { padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px; }
     .empty { text-align: center; color: #aaa; padding: 40px 0; font-size: 0.9rem; }
 
-    /* Template editor */
-    .tmpl-editor { margin-top: 0; }
-    .placeholder-hint {
-      font-size: 0.78rem; color: #999; margin-top: 6px; line-height: 1.5;
-    }
-    .placeholder-hint code {
-      background: #f0e8cc; padding: 1px 5px; border-radius: 4px;
-      color: #7a4f00; font-size: 0.78rem;
-    }
+    .placeholder-hint { font-size: 0.78rem; color: #999; margin-top: 6px; }
+    .placeholder-hint code { background: #f0e8cc; padding: 1px 5px; border-radius: 4px; color: #7a4f00; }
+
     .tmpl-preview-box {
       background: linear-gradient(135deg, #fdf8ee, #f5ead0);
       border: 1px solid var(--border); border-radius: 10px;
       padding: 14px 16px; font-size: 0.84rem; line-height: 1.7;
       white-space: pre-wrap; color: #333; margin-top: 10px;
     }
-    .tmpl-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+    /* VCF Upload area */
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 12px;
+      padding: 40px 20px; text-align: center;
+      cursor: pointer; transition: all .2s; margin-bottom: 16px;
+      background: #fffdf8;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--gold); background: #fdf5e0;
+    }
+    .upload-zone p { color: #aaa; font-size: 0.9rem; margin-top: 8px; }
+    .upload-zone .icon { font-size: 2.5rem; }
+
+    .vcf-result {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 16px; margin-top: 14px;
+      font-size: 0.88rem; background: #fffdf8;
+    }
+    .vcf-result .stat { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 10px; }
+    .vcf-result .stat-item { text-align: center; }
+    .vcf-result .stat-num { font-size: 1.6rem; font-weight: 700; color: var(--gold); }
+    .vcf-result .stat-lbl { font-size: 0.75rem; color: #888; }
 
     /* Toast */
     #toast {
@@ -108,8 +132,7 @@
       padding: 10px 24px; border-radius: 24px;
       font-size: 0.88rem; font-weight: 600;
       opacity: 0; pointer-events: none;
-      transition: opacity .3s, transform .3s;
-      z-index: 9999;
+      transition: opacity .3s, transform .3s; z-index: 9999;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
@@ -119,7 +142,7 @@
 <header>
   <div>
     <h1>🎊 Manajemen Tamu Undangan</h1>
-    <p>MBO Wedding – tambah tamu, edit template, salin pesan sekaligus</p>
+    <p>MBO Wedding – tamu, template, VCF export &amp; import</p>
   </div>
 </header>
 
@@ -127,87 +150,159 @@
 
 <div class="container">
 
-  <!-- ════════════════════ TEMPLATE PESAN ════════════════════ -->
-  <div class="card">
-    <h2>✉️ Template Pesan WhatsApp</h2>
-    <p class="sub">Template ini digunakan otomatis saat menyalin pesan untuk setiap tamu.</p>
-    <div id="alert-template" class="alert"></div>
+  <!-- NAV TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tamu')">👥 Daftar Tamu</button>
+    <button class="tab-btn" onclick="switchTab('template')">✉️ Template Pesan</button>
+    <button class="tab-btn" onclick="switchTab('export')">📤 Export VCF</button>
+    <button class="tab-btn" onclick="switchTab('import')">📥 Import VCF</button>
+  </div>
 
-    <div class="tmpl-editor">
+  <div class="tab-content">
+
+    <!-- ════════════════════════ TAB TAMU ════════════════════════ -->
+    <div id="tab-tamu" class="tab-panel active">
+      <p class="section-title">➕ Tambah Tamu</p>
+      <p class="section-sub">Tambah satu per satu, atau gunakan tab Import VCF untuk batch.</p>
+      <div id="alert-tamu" class="alert"></div>
+      <div class="form-row" style="margin-bottom:24px">
+        <div class="form-group">
+          <label>Nama Tamu *</label>
+          <input id="tamu-name" type="text" placeholder="Contoh: Bapak Andi Susanto"
+                 onkeydown="if(event.key==='Enter') tambahTamu()" />
+        </div>
+        <div class="form-group">
+          <label>No. WhatsApp</label>
+          <input id="tamu-wa" type="text" placeholder="08123456789"
+                 onkeydown="if(event.key==='Enter') tambahTamu()" />
+        </div>
+        <button class="btn btn-primary" onclick="tambahTamu()">Simpan</button>
+      </div>
+
+      <p class="section-title">📋 Daftar Tamu (<span id="jml-tamu">0</span> orang)</p>
+      <div class="search-bar" style="margin-top:10px">
+        <input id="search-tamu" type="text" placeholder="🔍 Cari nama tamu..." oninput="renderTamu()" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Nama</th><th>WhatsApp</th><th>Link &amp; Pesan</th><th>Hapus</th></tr></thead>
+          <tbody id="tbl-tamu"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ TAB TEMPLATE ═══════════════════════ -->
+    <div id="tab-template" class="tab-panel">
+      <p class="section-title">✉️ Template Pesan WhatsApp</p>
+      <p class="section-sub">Template ini dipakai otomatis saat tombol 💬 Pesan diklik di daftar tamu.</p>
+      <div id="alert-template" class="alert"></div>
       <div class="form-group" style="margin-bottom:10px">
         <label>Isi Pesan</label>
-        <textarea id="tmpl-isi" rows="7"
+        <textarea id="tmpl-isi" rows="8"
           placeholder="Assalamu'alaikum, Yth. {nama_tamu}..."
           oninput="previewTemplate()"></textarea>
         <p class="placeholder-hint">
-          Gunakan: <code>{nama_tamu}</code> → diganti nama tamu &nbsp;|
-          <code>{link_undangan}</code> → diganti link undangan
+          Gunakan: <code>{nama_tamu}</code> → nama tamu &nbsp;| <code>{link_undangan}</code> → link undangan
         </p>
       </div>
-
       <div class="tmpl-preview-box" id="tmpl-preview">Preview akan muncul di sini...</div>
-
-      <div class="tmpl-actions">
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
         <button class="btn btn-outline" onclick="previewTemplate()">👁 Preview</button>
         <button class="btn btn-primary" onclick="simpanTemplate()">💾 Simpan Template</button>
       </div>
     </div>
-  </div>
 
-  <!-- ════════════════════ TAMBAH TAMU ═════════════════════ -->
-  <div class="card">
-    <h2>➕ Tambah Tamu</h2>
-    <div id="alert-tamu" class="alert"></div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Nama Tamu *</label>
-        <input id="tamu-name" type="text" placeholder="Contoh: Bapak Andi Susanto"
-               onkeydown="if(event.key==='Enter') tambahTamu()" />
+    <!-- ═══════════════════════ TAB EXPORT VCF ═════════════════════ -->
+    <div id="tab-export" class="tab-panel">
+      <p class="section-title">📤 Export Daftar Tamu ke VCF</p>
+      <p class="section-sub">Download file .vcf berisi seluruh kontak tamu. Bisa langsung diimport ke kontak HP.</p>
+
+      <div style="background:#f5ead0;border-radius:10px;padding:18px 20px;margin-bottom:20px;font-size:.88rem;line-height:1.8">
+        <strong style="color:var(--gold)">📱 Cara import ke HP:</strong><br/>
+        <b>Android:</b> Buka file .vcf → Ketuk “Simpan ke Kontak”<br/>
+        <b>iPhone:</b> AirDrop / email file .vcf → Ketuk “Tambahkan Semua Kontak”<br/>
+        <b>WhatsApp:</b> Tidak perlu import; gunakan tombol 📲 WA di daftar tamu.
       </div>
-      <div class="form-group">
-        <label>No. WhatsApp</label>
-        <input id="tamu-wa" type="text" placeholder="08123456789"
-               onkeydown="if(event.key==='Enter') tambahTamu()" />
+
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="font-size:.9rem;color:#666">
+          Total tamu: <strong id="export-jml">0</strong> orang
+        </div>
+        <button class="btn btn-blue" onclick="downloadVCF()">📥 Download file .vcf</button>
       </div>
-      <button class="btn btn-primary" onclick="tambahTamu()">Simpan</button>
-    </div>
-  </div>
 
-  <!-- ════════════════════ DAFTAR TAMU ═════════════════════ -->
-  <div class="card">
-    <h2>📋 Daftar Tamu (<span id="jml-tamu">0</span> orang)</h2>
-    <div class="search-bar">
-      <input id="search-tamu" type="text" placeholder="🔍 Cari nama tamu..."
-             oninput="renderTamu()" />
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nama</th>
-            <th>WhatsApp</th>
-            <th>Link & Pesan</th>
-            <th>Hapus</th>
-          </tr>
-        </thead>
-        <tbody id="tbl-tamu">
-          <tr><td colspan="5" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+      <div style="margin-top:20px;background:#f0f8ff;border:1px solid #c0dff5;border-radius:10px;padding:16px 18px;font-size:.83rem">
+        <strong>🐍 Atau gunakan script Python (untuk dijalankan di server/lokal):</strong>
+        <pre style="margin-top:8px;background:#1e1e1e;color:#d4d4d4;padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:.82rem"># Generate VCF dari semua tamu
+python generate_vcf.py
 
-</div>
+# Tentukan output custom
+python generate_vcf.py --output kontak_tamu.vcf
+
+# Tambah tamu baru via CLI
+python generate_vcf.py --tambah "Bapak Andi" 08123456789
+python generate_vcf.py --tambah "Ibu Sari"</pre>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ TAB IMPORT VCF ═════════════════════ -->
+    <div id="tab-import" class="tab-panel">
+      <p class="section-title">📥 Import Tamu dari File VCF</p>
+      <p class="section-sub">Upload file .vcf (vCard) dari HP atau hasil export kontak. Duplikat nama otomatis dilewati.</p>
+
+      <div id="alert-import" class="alert"></div>
+
+      <!-- Drag & Drop zone -->
+      <div class="upload-zone" id="upload-zone"
+           onclick="document.getElementById('vcf-input').click()"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="icon">📂</div>
+        <strong>Klik atau drag & drop file .vcf di sini</strong>
+        <p id="upload-filename">Format: .vcf / vCard (maks 5 MB)</p>
+      </div>
+      <input type="file" id="vcf-input" accept=".vcf,.vcard" style="display:none"
+             onchange="onFileSelected(event)" />
+
+      <button class="btn btn-blue" id="btn-import" onclick="importVCF()" disabled
+              style="margin-bottom:16px">📥 Import Kontak</button>
+
+      <!-- Hasil import -->
+      <div class="vcf-result" id="import-result" style="display:none">
+        <div class="stat">
+          <div class="stat-item">
+            <div class="stat-num" id="res-added">0</div>
+            <div class="stat-lbl">✅ Ditambahkan</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="res-skipped" style="color:#e67e22">0</div>
+            <div class="stat-lbl">⚠️ Dilewati (duplikat)</div>
+          </div>
+        </div>
+        <div id="res-skipped-names" style="font-size:.8rem;color:#aaa"></div>
+      </div>
+    </div>
+
+  </div><!-- /tab-content -->
+</div><!-- /container -->
 
 <script>
   // ──────────────────── CONFIG ─────────────────────
   const API_BASE = 'https://beikbalikha.ourtestcloud.my.id';
   const BASE_URL = window.location.origin;
 
-  // ──────────────────── STATE ──────────────────────
-  let tamuList = [];
+  let tamuList  = [];
   let template1 = null;
+  let vcfFile   = null;
+
+  // ──────────────────── TABS ──────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', ['tamu','template','export','import'][i] === tab);
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (tab === 'export') document.getElementById('export-jml').textContent = tamuList.length;
+  }
 
   // ──────────────────── TEMPLATE ───────────────────
   async function loadTemplate() {
@@ -215,167 +310,169 @@
       const r = await fetch(API_BASE + '/api/template');
       const j = await r.json();
       template1 = (j.data || [])[0] || null;
-      if (template1) {
-        document.getElementById('tmpl-isi').value = template1.isi;
-        previewTemplate();
-      }
-    } catch (e) {
-      console.error('loadTemplate:', e);
-    }
+      if (template1) { document.getElementById('tmpl-isi').value = template1.isi; previewTemplate(); }
+    } catch(e) { console.error('loadTemplate:', e); }
   }
-
   function previewTemplate() {
     const isi = document.getElementById('tmpl-isi').value;
-    const preview = isi
-      .replace(/{nama_tamu}/g, 'Bapak\/Ibu [Nama Tamu]')
-      .replace(/{link_undangan}/g, BASE_URL + '/?to=[Nama+Tamu]');
-    document.getElementById('tmpl-preview').textContent = preview || 'Preview kosong...';
+    document.getElementById('tmpl-preview').textContent = isi
+      .replace(/{nama_tamu}/g, 'Bapak/Ibu [Nama Tamu]')
+      .replace(/{link_undangan}/g, BASE_URL + '/?to=[Nama+Tamu]') || 'Preview kosong...';
   }
-
   async function simpanTemplate() {
     const isi = document.getElementById('tmpl-isi').value.trim();
     if (!isi) return showAlert('alert-template', 'Isi template tidak boleh kosong!', 'error');
-
     try {
-      let r, j;
-      if (template1) {
-        // UPDATE template yang sudah ada
-        r = await fetch(API_BASE + '/api/template/' + template1.id, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ isi })
-        });
-      } else {
-        // CREATE jika belum ada sama sekali
-        r = await fetch(API_BASE + '/api/template', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nama: 'Template Utama', isi })
-        });
-      }
-      j = await r.json();
+      const url    = template1 ? `${API_BASE}/api/template/${template1.id}` : `${API_BASE}/api/template`;
+      const method = template1 ? 'PUT' : 'POST';
+      const body   = template1 ? { isi } : { nama: 'Template Utama', isi };
+      const r = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const j = await r.json();
       if (j.success) {
         template1 = j.data;
         showAlert('alert-template', '✅ Template berhasil disimpan!', 'success');
-        previewTemplate();
-        // Re-render tabel agar pesan di tombol salin ikut update
-        renderTamu();
-      } else {
-        showAlert('alert-template', j.message || 'Gagal menyimpan', 'error');
-      }
+        previewTemplate(); renderTamu();
+      } else showAlert('alert-template', j.message || 'Gagal menyimpan', 'error');
     } catch { showAlert('alert-template', 'Gagal menghubungi server', 'error'); }
   }
 
-  // ──────────────────── BUILD PESAN ─────────────────
+  // ──────────────────── TAMU ───────────────────────
   function buildPesan(namaTamu) {
     if (!template1) return '';
     const link = BASE_URL + '/?to=' + encodeURIComponent(namaTamu);
-    return template1.isi
-      .replace(/{nama_tamu}/g, namaTamu)
-      .replace(/{link_undangan}/g, link);
+    return template1.isi.replace(/{nama_tamu}/g, namaTamu).replace(/{link_undangan}/g, link);
   }
-
-  // ──────────────────── TAMU ───────────────────────
   async function loadTamu() {
     try {
       const r = await fetch(API_BASE + '/api/tamu');
-      const j = await r.json();
-      tamuList = j.data || [];
-    } catch (e) {
-      console.error('loadTamu:', e);
-      tamuList = [];
-    }
+      tamuList = (await r.json()).data || [];
+    } catch { tamuList = []; }
     renderTamu();
   }
-
   function renderTamu() {
     const q = (document.getElementById('search-tamu').value || '').toLowerCase();
     const filtered = tamuList.filter(t => t.nama.toLowerCase().includes(q));
     document.getElementById('jml-tamu').textContent = tamuList.length;
     const tbody = document.getElementById('tbl-tamu');
-    if (!filtered.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="empty">Belum ada tamu</td></tr>';
-      return;
-    }
+    if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">Belum ada tamu</td></tr>'; return; }
     tbody.innerHTML = filtered.map((t, i) => {
-      const link  = BASE_URL + '/?to=' + encodeURIComponent(t.nama);
+      const link = BASE_URL + '/?to=' + encodeURIComponent(t.nama);
       const pesan = buildPesan(t.nama);
-      const safeLink  = escAttr(link);
-      const safePesan = escAttr(pesan);
+      const sl = escAttr(link), sp = escAttr(pesan);
       return `<tr>
-        <td>${i + 1}</td>
+        <td>${i+1}</td>
         <td><strong>${escHtml(t.nama)}</strong></td>
         <td>${t.wa ? escHtml(t.wa) : '<span style="color:#ccc">–</span>'}</td>
-        <td>
-          <div class="link-cell">
-            <input type="text" value="${safeLink}" readonly />
-            <button class="btn btn-primary btn-sm"
-              title="Salin hanya link"
-              onclick="copyLink('${safeLink}')">📋 Link</button>
-            <button class="btn btn-wa btn-sm"
-              title="Salin pesan lengkap (sudah termasuk link)"
-              onclick="copyPesan('${safePesan}')">💬 Pesan</button>
-            ${t.wa
-              ? `<button class="btn btn-wa btn-sm"
-                  title="Langsung buka WhatsApp"
-                  onclick="bukaWA('${escAttr(t.wa)}', '${safePesan}')">📲 WA</button>`
-              : ''}
-          </div>
-        </td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="hapusTamu(${t.id})">🗑</button>
-        </td>
+        <td><div class="link-cell">
+          <input type="text" value="${sl}" readonly />
+          <button class="btn btn-primary btn-sm" onclick="copyLink('${sl}')" title="Salin link">📋 Link</button>
+          <button class="btn btn-wa btn-sm" onclick="copyPesan('${sp}')" title="Salin pesan">💬 Pesan</button>
+          ${t.wa ? `<button class="btn btn-wa btn-sm" onclick="bukaWA('${escAttr(t.wa)}','${sp}')" title="Buka WA">📲 WA</button>` : ''}
+        </div></td>
+        <td><button class="btn btn-danger btn-sm" onclick="hapusTamu(${t.id})">🗑</button></td>
       </tr>`;
     }).join('');
   }
-
   async function tambahTamu() {
     const nama = document.getElementById('tamu-name').value.trim();
     const wa   = document.getElementById('tamu-wa').value.trim();
     if (!nama) return showAlert('alert-tamu', 'Nama tamu wajib diisi!', 'error');
     try {
       const r = await fetch(API_BASE + '/api/tamu', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nama, wa })
       });
       const j = await r.json();
       if (j.success) {
-        showAlert('alert-tamu', `✅ Tamu "${nama}" berhasil ditambahkan!`, 'success');
+        showAlert('alert-tamu', `✅ "${nama}" ditambahkan!`, 'success');
         document.getElementById('tamu-name').value = '';
         document.getElementById('tamu-wa').value   = '';
         document.getElementById('tamu-name').focus();
         await loadTamu();
-      } else {
-        showAlert('alert-tamu', j.message, 'error');
-      }
+      } else showAlert('alert-tamu', j.message, 'error');
     } catch { showAlert('alert-tamu', 'Gagal menghubungi server', 'error'); }
   }
-
   async function hapusTamu(id) {
     if (!confirm('Hapus tamu ini?')) return;
     await fetch(API_BASE + '/api/tamu/' + id, { method: 'DELETE' });
     loadTamu();
   }
 
+  // ──────────────────── EXPORT VCF ─────────────────
+  function downloadVCF() {
+    if (!tamuList.length) return toast('⚠️ Belum ada tamu untuk di-export');
+    // Arahkan browser ke endpoint — backend kirim sebagai attachment
+    window.open(API_BASE + '/api/tamu/export/vcf', '_blank');
+    toast('📥 Mengunduh file VCF...');
+  }
+
+  // ──────────────────── IMPORT VCF ─────────────────
+  function onFileSelected(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    setVCFFile(file);
+  }
+  function onDragOver(e) {
+    e.preventDefault();
+    document.getElementById('upload-zone').classList.add('dragover');
+  }
+  function onDragLeave(e) {
+    document.getElementById('upload-zone').classList.remove('dragover');
+  }
+  function onDrop(e) {
+    e.preventDefault();
+    document.getElementById('upload-zone').classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) setVCFFile(file);
+  }
+  function setVCFFile(file) {
+    vcfFile = file;
+    document.getElementById('upload-filename').textContent = `📄 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+    document.getElementById('btn-import').disabled = false;
+    document.getElementById('import-result').style.display = 'none';
+    showAlert('alert-import', `File dipilih: ${file.name}`, 'info');
+  }
+  async function importVCF() {
+    if (!vcfFile) return showAlert('alert-import', 'Pilih file VCF terlebih dahulu!', 'error');
+    const formData = new FormData();
+    formData.append('vcf', vcfFile);
+    try {
+      document.getElementById('btn-import').disabled = true;
+      document.getElementById('btn-import').textContent = '⏳ Memproses...';
+      const r = await fetch(API_BASE + '/api/tamu/import/vcf', { method: 'POST', body: formData });
+      const j = await r.json();
+      if (j.success) {
+        document.getElementById('res-added').textContent   = j.added;
+        document.getElementById('res-skipped').textContent = j.skipped;
+        document.getElementById('res-skipped-names').textContent =
+          j.skipped_names?.length ? 'Dilewati: ' + j.skipped_names.join(', ') : '';
+        document.getElementById('import-result').style.display = 'block';
+        showAlert('alert-import', j.message, 'success');
+        await loadTamu();
+        // Reset
+        vcfFile = null;
+        document.getElementById('vcf-input').value = '';
+        document.getElementById('upload-filename').textContent = 'Format: .vcf / vCard (maks 5 MB)';
+      } else {
+        showAlert('alert-import', j.message || 'Gagal import', 'error');
+      }
+    } catch { showAlert('alert-import', 'Gagal menghubungi server', 'error'); }
+    finally {
+      document.getElementById('btn-import').disabled = false;
+      document.getElementById('btn-import').textContent = '📥 Import Kontak';
+    }
+  }
+
   // ──────────────────── COPY HELPERS ─────────────────
   function copyLink(link) {
-    navigator.clipboard.writeText(link)
-      .then(() => toast('📋 Link disalin!'))
-      .catch(() => toast('❌ Gagal menyalin'));
+    navigator.clipboard.writeText(link).then(() => toast('📋 Link disalin!')).catch(() => toast('❌ Gagal'));
   }
-
   function copyPesan(pesan) {
-    const decoded = unescAttr(pesan);
-    navigator.clipboard.writeText(decoded)
-      .then(() => toast('💬 Pesan disalin! (sudah termasuk link)'))
-      .catch(() => toast('❌ Gagal menyalin'));
+    navigator.clipboard.writeText(unescAttr(pesan)).then(() => toast('💬 Pesan disalin!')).catch(() => toast('❌ Gagal'));
   }
-
   function bukaWA(wa, pesan) {
-    const nomorBersih = wa.replace(/^0/, '62').replace(/[^0-9]/g, '');
-    const decoded = unescAttr(pesan);
-    window.open(`https://wa.me/${nomorBersih}?text=${encodeURIComponent(decoded)}`, '_blank');
+    const nomor = wa.replace(/^0/,'62').replace(/[^0-9]/g,'');
+    window.open(`https://wa.me/${nomor}?text=${encodeURIComponent(unescAttr(pesan))}`, '_blank');
   }
 
   // ──────────────────── UTILS ──────────────────────
@@ -390,22 +487,17 @@
   }
   function toast(msg) {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
+    el.textContent = msg; el.classList.add('show');
     setTimeout(() => el.classList.remove('show'), 2200);
   }
   function showAlert(id, msg, type) {
     const el = document.getElementById(id);
-    el.textContent = msg;
-    el.className = 'alert alert-' + type;
-    setTimeout(() => el.className = 'alert', 3500);
+    el.textContent = msg; el.className = 'alert alert-' + type;
+    setTimeout(() => el.className = 'alert', 4000);
   }
 
   // ──────────────────── INIT ───────────────────────
-  (async () => {
-    await loadTemplate();
-    await loadTamu();
-  })();
+  (async () => { await loadTemplate(); await loadTamu(); })();
 </script>
 </body>
 </html>
